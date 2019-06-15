@@ -6,8 +6,8 @@ import { MapMain } from './map/MapMain';
 
 export class GameplayMain extends React.Component {
   state = {
-    snakeBalls: [],
-    currentDirection: 'up', //one of either: up, down, left, right
+    snakeBalls: [{x: 0, y:0}],
+    currentDirection: 'right', //one of either: up, down, left, right
     ballToEat: {x: 0, y: 0},
     mapDimensions: {width: null, height: null}
   }
@@ -24,8 +24,16 @@ export class GameplayMain extends React.Component {
   render(){
     return (
       <View style={styles.container}>
-        <Header styleSheet={styles.header} backToLanding={this.props.backToLanding}/>
-        <MapMain styleSheet={styles.mapMain} mapDimensions={this.state.mapDimensions} setMapDimensions={this.setMapDimensions}/>
+        <Header
+          styleSheet={styles.header} 
+          backToLanding={this.props.backToLanding}
+        />
+        <MapMain 
+          styleSheet={styles.mapMain} 
+          mapDimensions={this.state.mapDimensions} 
+          setMapDimensions={this.setMapDimensions} 
+          snakeBalls={this.state.snakeBalls}
+        />
       </View>
     )
   }

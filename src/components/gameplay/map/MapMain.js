@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, Image } from 'react-native';
 
 import { RowOfEmptyCells } from './RowOfEmtpyCells';
 
@@ -8,17 +8,16 @@ export const MapMain = (props) => {
     const xFromTop = event.nativeEvent.locationX;
     const yFromTop = event.nativeEvent.locationY;
     console.log(xFromTop, yFromTop)
-    console.log(event)
   }
 
-  let rows;
+  let rows, cellWidth, cellHeight;
 
   if (props.mapDimensions) {
     let numOfColumns = Math.floor(props.mapDimensions.width / 30)
     let numOfRows = Math.floor(props.mapDimensions.height / 30)
 
-    let cellWidth = props.mapDimensions.width / numOfColumns
-    let cellHeight = props.mapDimensions.height / numOfRows
+    cellWidth = props.mapDimensions.width / numOfColumns
+    cellHeight = props.mapDimensions.height / numOfRows
     
     rows = [...Array(numOfRows).keys()].map(i => {
       return <RowOfEmptyCells 
@@ -30,9 +29,18 @@ export const MapMain = (props) => {
     })
   }
 
+  let owenSizeStyle = (isNaN(cellWidth) || isNaN(cellHeight)) ?
+    {width: 30, height: 30, top: 0} :
+    {
+      width: cellWidth, 
+      height: cellHeight, 
+      top: props.snakeBalls[0].y, 
+      right: props.mapDimensions.width - props.snakeBalls[0].x - cellWidth};
+
   return (
     <TouchableOpacity style={[props.styleSheet, styles.mapMain]} onPressIn={onPressIn} onLayout={props.setMapDimensions}>
       {rows}
+      <Image source={require('../../../../OWEN-WILSON.png')} style={[owenSizeStyle, styles.owenHead]}/>
     </TouchableOpacity>
   )
 }
@@ -44,5 +52,8 @@ const styles = {
     alignItems: 'space-around',
     alignContent: 'space-around',
     justifyContent: 'space-evenly'
+  },
+  owenHead: {
+    position: 'absolute'
   }
 }
