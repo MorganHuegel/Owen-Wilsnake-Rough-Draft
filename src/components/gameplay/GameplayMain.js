@@ -8,14 +8,24 @@ export class GameplayMain extends React.Component {
   state = {
     snakeBalls: [],
     currentDirection: 'up', //one of either: up, down, left, right
-    ballToEat: {x: 0, y: 0}
+    ballToEat: {x: 0, y: 0},
+    mapDimensions: {width: null, height: null}
+  }
+
+  setMapDimensions = (event) => {
+    this.setState({
+      mapDimensions: {
+        width: event.nativeEvent.layout.width,
+        height: event.nativeEvent.layout.height
+      }
+    })
   }
 
   render(){
     return (
       <View style={styles.container}>
         <Header styleSheet={styles.header} backToLanding={this.props.backToLanding}/>
-        <MapMain styleSheet={styles.mapMain}/>
+        <MapMain styleSheet={styles.mapMain} mapDimensions={this.state.mapDimensions} setMapDimensions={this.setMapDimensions}/>
       </View>
     )
   }
@@ -24,18 +34,16 @@ export class GameplayMain extends React.Component {
 const styles = {
   container: {
     flex: 1,
-    borderWidth: 5,
+    borderWidth: 3,
     borderStyle: 'dashed',
     borderColor: 'rgb(120, 120, 120)'
   },
   header: {
     flex: 1,
-    backgroundColor: 'black',
-    color: 'white'
+    backgroundColor: 'black'
   },
   mapMain: {
-    flex: 6,
-    backgroundColor: 'red',
-    color: 'white'
+    flex: 8,
+    backgroundColor: 'rgb(70, 70, 70)'
   }
 }
