@@ -30,12 +30,13 @@ export const MapMain = (props) => {
   }
 
   let owenSizeStyle = (isNaN(cellWidth) || isNaN(cellHeight)) ?
-    {width: 30, height: 30, top: 0} :
+    {display: 'none'} :
     {
+      display: 'flex',
       width: cellWidth, 
       height: cellHeight, 
-      top: props.snakeBalls[0].y, 
-      right: props.mapDimensions.width - props.snakeBalls[0].x - cellWidth};
+      top: props.snakeBalls[0].y + 5, 
+      right: props.mapDimensions.width - props.snakeBalls[0].x - cellWidth - 5};
 
   return (
     <TouchableOpacity style={[props.styleSheet, styles.mapMain]} onPressIn={onPressIn} onLayout={props.setMapDimensions}>
