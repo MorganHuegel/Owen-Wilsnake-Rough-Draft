@@ -7,16 +7,30 @@ import { MapMain } from './map/MapMain';
 export class GameplayMain extends React.Component {
   state = {
     snakeBalls: [{x: 0, y:0}],
+    cellDimensions: {width: null, height: null},
     currentDirection: 'right', //one of either: up, down, left, right
     ballToEat: {x: 0, y: 0},
     mapDimensions: {width: null, height: null}
   }
 
+
   setMapDimensions = (event) => {
+    windowWidth = event.nativeEvent.layout.width
+    windowHeight = event.nativeEvent.layout.height
+
+    let numOfColumns = Math.floor(windowWidth / 30)
+    let numOfRows = Math.floor(windowHeight / 30)
+    cellWidth = windowWidth / numOfColumns
+    cellHeight = windowHeight / numOfRows
+
     this.setState({
+      cellDimensions: {
+        width: cellWidth,
+        height: cellHeight
+      },
       mapDimensions: {
-        width: event.nativeEvent.layout.width,
-        height: event.nativeEvent.layout.height
+        width: windowWidth,
+        height: windowHeight
       }
     })
   }
@@ -29,6 +43,7 @@ export class GameplayMain extends React.Component {
           backToLanding={this.props.backToLanding}
         />
         <MapMain 
+          cellDimensions={this.state.cellDimensions}
           styleSheet={styles.mapMain} 
           mapDimensions={this.state.mapDimensions} 
           setMapDimensions={this.setMapDimensions} 

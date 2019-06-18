@@ -13,18 +13,15 @@ export const MapMain = (props) => {
   let rows, cellWidth, cellHeight;
 
   if (props.mapDimensions) {
-    let numOfColumns = Math.floor(props.mapDimensions.width / 30)
-    let numOfRows = Math.floor(props.mapDimensions.height / 30)
-
-    cellWidth = props.mapDimensions.width / numOfColumns
-    cellHeight = props.mapDimensions.height / numOfRows
+    cellWidth = props.cellDimensions.width
+    cellHeight = props.cellDimensions.height
     
-    rows = [...Array(numOfRows).keys()].map(i => {
+    rows = [...Array(Math.floor(props.mapDimensions.height / 30)).keys()].map(i => {
       return <RowOfEmptyCells 
         key={i} 
         cellWidth={cellWidth}
         cellHeight={cellHeight}
-        numOfColumns={numOfColumns}
+        numOfColumns={Math.floor(props.mapDimensions.width / 30)}
       />
     })
   }
