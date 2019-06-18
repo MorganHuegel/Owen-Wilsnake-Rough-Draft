@@ -8,7 +8,7 @@ export class GameplayMain extends React.Component {
   state = {
     snakeBalls: [{x: -10, y:0}],
     cellDimensions: {width: null, height: null},
-    currentDirection: 'down', //one of either: up, down, left, right
+    currentDirection: 'right', //one of either: up, down, left, right
     ballToEat: {x: 0, y: 0},
     mapDimensions: {width: null, height: null}
   }
@@ -72,6 +72,10 @@ export class GameplayMain extends React.Component {
     })
   }
 
+  setCurrentDirection = (nextDirection) => {
+    this.setState({currentDirection: nextDirection})
+  }
+
 
   setMapDimensions = (event) => {
     windowWidth = event.nativeEvent.layout.width - 10
@@ -102,11 +106,13 @@ export class GameplayMain extends React.Component {
           backToLanding={this.props.backToLanding}
         />
         <MapMain 
+          setCurrentDirection={this.setCurrentDirection}
           cellDimensions={this.state.cellDimensions}
           styleSheet={styles.mapMain} 
           mapDimensions={this.state.mapDimensions} 
           setMapDimensions={this.setMapDimensions} 
           snakeBalls={this.state.snakeBalls}
+          currentDirection={this.state.currentDirection}
         />
       </View>
     )
@@ -121,7 +127,8 @@ const styles = {
     borderColor: 'rgb(120, 120, 120)'
   },
   header: {
-    flex: 1,
+    // flex: 1,
+    height: 60,
     backgroundColor: 'black'
   },
   mapMain: {

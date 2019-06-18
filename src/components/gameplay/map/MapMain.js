@@ -5,11 +5,22 @@ import { RowOfEmptyCells } from './RowOfEmtpyCells';
 
 export const MapMain = (props) => {
   function onPressIn(event){
-    const xFromTop = event.nativeEvent.locationX;
-    const yFromTop = event.nativeEvent.locationY;
-    console.log(xFromTop, yFromTop)
+    //20px difference plus one cell-width between pageX and location on map component
+    const xFromLeft = event.nativeEvent.pageX - 20 - props.cellDimensions.width;
+    //100px difference plus one cell-height between pageY and location on map component
+    const yFromTop = event.nativeEvent.pageY - 95 - props.cellDimensions.height;
+
+    let nextDirection;
+    const currentHead = props.snakeBalls[0]
+    if (props.currentDirection === 'up' || props.currentDirection === 'down') {
+      nextDirection = xFromLeft < currentHead.x ? 'left' : 'right'
+    } else {
+      nextDirection = yFromTop < currentHead.y ? 'up' : 'down'
+    }
+    props.setCurrentDirection(nextDirection)
   }
 
+  
   let rows, cellWidth, cellHeight;
 
   if (props.mapDimensions) {
