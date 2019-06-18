@@ -24,14 +24,14 @@ export default class App extends React.Component {
       <LandingMain setToPlaying={this.setToPlaying}/>
 
     return (
-      <View style={styles.container}>
+      <View style={stylesApp.container}>
         {component}
       </View>
     )
   }
 }
 
-const styles = StyleSheet.create({
+const stylesApp = StyleSheet.create({
   container: { 
     flex: 1,
     flexDirection: 'column',

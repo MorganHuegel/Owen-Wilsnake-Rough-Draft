@@ -1,19 +1,15 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-
-let cellWidth;
+import { View } from 'react-native';
 
 export const CellEmpty = (props) => {
-
-  cellWidth = props.cellWidth
   return (
-    <View style={styles.cell}>
-      <View style={styles.dot}></View>
+    <View style={stylesCellEmpty.cell}>
+      <View style={stylesCellEmpty.dot}></View>
     </View>
   )
 }
 
-styles = {
+stylesCellEmpty = {
   cell: {
     borderRadius: 80,
     overflow: 'hidden',

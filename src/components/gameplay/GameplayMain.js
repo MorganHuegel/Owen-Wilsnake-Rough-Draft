@@ -9,17 +9,33 @@ export class GameplayMain extends React.Component {
     snakeBalls: [{x: -10, y:0}],
     cellDimensions: {width: null, height: null},
     currentDirection: 'right', //one of either: up, down, left, right
-    ballToEat: {x: 0, y: 0},
+    ballToEat: {columnIndex: 2, rowIndex: 3}, //columnIndex and rowIndex (NOT pixels)
     mapDimensions: {width: null, height: null}
   }
 
   componentDidMount(){
     this.moveInterval = setInterval(this.moveOwen, 500)
-    this.moveInterval
   }
 
   componentWillUnmount(){
     clearInterval(this.moveInterval)
+  }
+
+
+  setBallToEat = (firstTurn = false) => {
+    const numOfRows = this.state.mapDimensions.height / this.state.cellDimensions.height
+    const numOfColumns = this.state.mapDimensions.width / this.state.cellDimensions.width
+
+    let rowIndex = Math.floor(Math.random() * numOfRows)
+    let columnIndex = Math.floor(Math.random() * numOfColumns)
+
+    if (firstTurn && (rowIndex === 0 || columnIndex === 0)) {
+      rowIndex = 1
+      columnIndex = 1
+    }
+
+    ballCoordinate = {rowIndex, columnIndex}
+    this.setState({ballToEat: ballCoordinate})
   }
 
 
@@ -95,31 +111,32 @@ export class GameplayMain extends React.Component {
         width: windowWidth,
         height: windowHeight
       }
-    })
+    }, () => this.setBallToEat(true)) // <--- callback to set ballToEat when finished rendering map
   }
 
   render(){
     return (
-      <View style={styles.container}>
+      <View style={stylesGameplayMain.container}>
         <Header
-          styleSheet={styles.header} 
+          styleSheet={stylesGameplayMain.header} 
           backToLanding={this.props.backToLanding}
         />
         <MapMain 
           setCurrentDirection={this.setCurrentDirection}
           cellDimensions={this.state.cellDimensions}
-          styleSheet={styles.mapMain} 
+          styleSheet={stylesGameplayMain.mapMain} 
           mapDimensions={this.state.mapDimensions} 
           setMapDimensions={this.setMapDimensions} 
           snakeBalls={this.state.snakeBalls}
           currentDirection={this.state.currentDirection}
+          ballToEat={this.state.ballToEat}
         />
       </View>
     )
   }
 }
 
-const styles = {
+const stylesGameplayMain = {
   container: {
     flex: 1,
     borderWidth: 3,

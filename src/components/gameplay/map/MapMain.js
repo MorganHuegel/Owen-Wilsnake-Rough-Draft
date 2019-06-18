@@ -20,18 +20,20 @@ export const MapMain = (props) => {
     props.setCurrentDirection(nextDirection)
   }
 
-  
+
   let rows, cellWidth, cellHeight;
 
   if (props.mapDimensions) {
     cellWidth = props.cellDimensions.width
     cellHeight = props.cellDimensions.height
     
-    rows = [...Array(Math.floor(props.mapDimensions.height / 30)).keys()].map(i => {
+    rows = [...Array(Math.floor(props.mapDimensions.height / 30)).keys()].map(rowIndex => {
       return <RowOfEmptyCells 
-        key={i} 
+        key={rowIndex} 
+        rowIndex={rowIndex}
         cellWidth={cellWidth}
         cellHeight={cellHeight}
+        ballToEat={props.ballToEat}
         numOfColumns={Math.floor(props.mapDimensions.width / 30)}
       />
     })
@@ -47,14 +49,14 @@ export const MapMain = (props) => {
       right: props.mapDimensions.width - props.snakeBalls[0].x - cellWidth - 5};
 
   return (
-    <TouchableOpacity style={[props.styleSheet, styles.mapMain]} onPressIn={onPressIn} onLayout={props.setMapDimensions}>
+    <TouchableOpacity style={[props.styleSheet, stylesMapMain.mapMain]} onPressIn={onPressIn} onLayout={props.setMapDimensions}>
       {rows}
-      <Image source={require('../../../../OWEN-WILSON.png')} style={[owenSizeStyle, styles.owenHead]}/>
+      <Image source={require('../../../../OWEN-WILSON.png')} style={[owenSizeStyle, stylesMapMain.owenHead]}/>
     </TouchableOpacity>
   )
 }
 
-const styles = {
+const stylesMapMain = {
   mapMain: {
     flexDirection: 'column',
     padding: 5,
