@@ -9,7 +9,7 @@ export class GameplayMain extends React.Component {
     snakeBalls: [{x: -10, y:0}],
     cellDimensions: {width: null, height: null},
     currentDirection: 'right', //one of either: up, down, left, right
-    ballToEat: {columnIndex: 2, rowIndex: 3}, //columnIndex and rowIndex (NOT pixels)
+    ballToEat: {columnIndex: null, rowIndex: null}, //columnIndex and rowIndex (NOT pixels)
     mapDimensions: {width: null, height: null}
   }
 
