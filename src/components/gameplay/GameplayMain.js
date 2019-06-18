@@ -8,7 +8,7 @@ export class GameplayMain extends React.Component {
   state = {
     snakeBalls: [{x: -10, y:0}],
     cellDimensions: {width: null, height: null},
-    currentDirection: 'right', //one of either: up, down, left, right
+    currentDirection: 'down', //one of either: up, down, left, right
     ballToEat: {x: 0, y: 0},
     mapDimensions: {width: null, height: null}
   }
@@ -32,7 +32,7 @@ export class GameplayMain extends React.Component {
         nextCoordinate.x = this.state.snakeBalls[0].x
         nextCoordinate.y = this.state.snakeBalls[0].y - this.state.cellDimensions.height
         if (nextCoordinate.y < 0) {
-          nextCoordinate.y = this.state.cellHeight
+          nextCoordinate.y = this.state.cellDimensions.height
           nextDirection = 'down'
         }
         break;
