@@ -4,6 +4,10 @@ import { View } from 'react-native';
 import { Header } from './map/Header';
 import { MapMain } from './map/MapMain';
 
+let Sound = require('react-native-sound');
+Sound.setCategory('Playback'); // Enable playback in silence mode
+
+
 export class GameplayMain extends React.Component {
   state = {
     snakeBalls: [{x: -10, y:0}],
@@ -14,6 +18,12 @@ export class GameplayMain extends React.Component {
   }
 
   componentDidMount(){
+    this.audio = new Sound(require('../../../owen-wilson-saying-wow.mp3'), err => {
+      if (err) {
+        console.log(err)
+      }
+    })
+
     this.moveInterval = setInterval(this.moveOwen, 500)
   }
 
@@ -107,6 +117,7 @@ export class GameplayMain extends React.Component {
 
 
   ateChicken = () => {
+    this.audio.play() // <-- takes an optional callback for debugging  (success) => {...}
     this.setBallToEat();
   }
 
