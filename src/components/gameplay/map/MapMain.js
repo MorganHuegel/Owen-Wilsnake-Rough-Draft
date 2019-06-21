@@ -39,14 +39,6 @@ export const MapMain = (props) => {
     })
   }
 
-  // let owenSizeStyle = (isNaN(cellWidth) || isNaN(cellHeight)) ?
-  //   {display: 'none'} :
-  //   {
-  //     display: 'flex',
-  //     width: cellWidth, 
-  //     height: cellHeight, 
-  //     top: props.snakeBalls[0].y + 5, 
-  //     right: props.mapDimensions.width - props.snakeBalls[0].x - cellWidth - 5};
 
   let owenSnake = props.snakeBalls.map(owenBall => {
     let owenSizeStyle = (isNaN(cellWidth) || isNaN(cellHeight)) ?
@@ -63,7 +55,6 @@ export const MapMain = (props) => {
   return (
     <TouchableOpacity style={[props.styleSheet, stylesMapMain.mapMain]} onPressIn={onPressIn} onLayout={props.setMapDimensions}>
       {rows}
-      {/* <Image source={require('../../../../OWEN-WILSON.png')} style={[owenSizeStyle, stylesMapMain.owenHead]}/> */}
       {owenSnake}
     </TouchableOpacity>
   )
