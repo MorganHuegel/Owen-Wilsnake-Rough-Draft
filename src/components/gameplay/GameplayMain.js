@@ -81,15 +81,33 @@ export class GameplayMain extends React.Component {
     }
 
     updatedSnakeBalls = [nextCoordinate, ...this.state.snakeBalls]
-    updatedSnakeBalls.pop()
-    this.setState({
-      snakeBalls: updatedSnakeBalls,
-      currentDirection: nextDirection
-    })
+    //Check if owen will be on top of chicken (plus or minus 8 pixels)
+    let chickenXCoordinate = this.state.ballToEat.columnIndex * this.state.cellDimensions.width - 10
+    let chickenYCoordinate = this.state.ballToEat.rowIndex * this.state.cellDimensions.height
+    if (
+      Math.abs(chickenXCoordinate - nextCoordinate.x) < 8 &&
+      Math.abs(chickenYCoordinate - nextCoordinate.y) < 8
+    ){
+      return this.setState({
+        snakeBalls: updatedSnakeBalls,
+        currentDirection: nextDirection
+      }, () => this.ateChicken())
+    } else {
+      updatedSnakeBalls.pop()
+      this.setState({
+        snakeBalls: updatedSnakeBalls,
+        currentDirection: nextDirection
+      })    
+    }
   }
 
   setCurrentDirection = (nextDirection) => {
     this.setState({currentDirection: nextDirection})
+  }
+
+
+  ateChicken = () => {
+    this.setBallToEat();
   }
 
 
