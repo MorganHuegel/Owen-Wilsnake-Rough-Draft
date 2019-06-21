@@ -40,7 +40,7 @@ export const MapMain = (props) => {
   }
 
 
-  let owenSnake = props.snakeBalls.map(owenBall => {
+  let owenSnake = props.snakeBalls.map((owenBall, index) => {
     let owenSizeStyle = (isNaN(cellWidth) || isNaN(cellHeight)) ?
     {display: 'none'} :
     {
@@ -49,7 +49,7 @@ export const MapMain = (props) => {
       height: cellHeight, 
       top: owenBall.y + 5, 
       right: props.mapDimensions.width - owenBall.x - cellWidth - 5};
-    return <Image source={require('../../../../OWEN-WILSON.png')} style={[owenSizeStyle, stylesMapMain.owenHead]}/>
+    return <Image key={index} source={require('../../../../OWEN-WILSON.png')} style={[owenSizeStyle, stylesMapMain.owenHead]}/>
   })
 
   return (
