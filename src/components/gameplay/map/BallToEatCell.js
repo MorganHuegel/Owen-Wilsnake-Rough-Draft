@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 
 export const BallToEatCell = (props) => {
   return (
     <View style={stylesBallToEat.ballToEatCell}>
-      <Text style={stylesBallToEat.ballToEatDot}></Text>
+      <Image source={require('../../../../chicken-wing.png')} style={stylesBallToEat.chicken}/>
     </View>
   )
 }
@@ -17,10 +17,8 @@ stylesBallToEat = {
     justifyContent: 'center',
     alignItems: 'center'
   },
-  ballToEatDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 80,
-    backgroundColor: 'blue'
+  chicken: {
+    width: 35,
+    height: 26.7,
   }
 }
