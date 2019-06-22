@@ -6,6 +6,23 @@ import { MapMain } from './map/MapMain';
 
 let Sound = require('react-native-sound');
 Sound.setCategory('Playback'); // Enable playback in silence mode
+const soundsFolder = '../../../sounds'
+let soundBytes = [
+  require(`${soundsFolder}/owen-wilson-saying-wow.mp3`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-1.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-2.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-3.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-4.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-5.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-6.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-7.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-8.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-9.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-10.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-11.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-12.m4a`),
+  require(`${soundsFolder}/owen-wilson-saying-wow-13.m4a`)
+]
 
 
 export class GameplayMain extends React.Component {
@@ -14,17 +31,23 @@ export class GameplayMain extends React.Component {
     cellDimensions: {width: null, height: null},
     currentDirection: 'right', //one of either: up, down, left, right
     ballToEat: {columnIndex: null, rowIndex: null}, //columnIndex and rowIndex (NOT pixels)
-    mapDimensions: {width: null, height: null}
+    mapDimensions: {width: null, height: null},
   }
 
-  componentDidMount(){
-    this.audio = new Sound(require('../../../owen-wilson-saying-wow.mp3'), err => {
+  soundByte = 0
+
+  setAudio = () => {
+    this.audio = new Sound(soundBytes[this.soundByte], err => {
       if (err) {
         console.log(err)
       }
+      this.soundByte = (this.soundByte === soundBytes.length - 1) ? 0 : this.soundByte + 1
     })
+  }
 
-    this.moveInterval = setInterval(this.moveOwen, 500)
+  componentDidMount(){
+    this.setAudio()
+    this.moveInterval = setInterval(this.moveOwen, 300)
   }
 
   componentWillUnmount(){
@@ -118,6 +141,7 @@ export class GameplayMain extends React.Component {
 
   ateChicken = () => {
     this.audio.play() // <-- takes an optional callback for debugging  (success) => {...}
+    this.setAudio()
     this.setBallToEat();
   }
 
