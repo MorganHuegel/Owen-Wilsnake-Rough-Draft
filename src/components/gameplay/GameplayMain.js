@@ -3,6 +3,7 @@ import { View } from 'react-native';
 
 import { Header } from './map/Header';
 import { MapMain } from './map/MapMain';
+import { GameOverScreen } from './GameOverScreen';
 
 let Sound = require('react-native-sound');
 Sound.setCategory('Playback'); // Enable playback in silence mode
@@ -32,6 +33,7 @@ export class GameplayMain extends React.Component {
     currentDirection: 'right', //one of either: up, down, left, right
     ballToEat: {columnIndex: null, rowIndex: null}, //columnIndex and rowIndex (NOT pixels)
     mapDimensions: {width: null, height: null},
+    gameOver: false
   }
 
   soundByte = 0
@@ -168,6 +170,10 @@ export class GameplayMain extends React.Component {
   }
 
   render(){
+    if (this.state.gameOver) {
+      return <GameOverScreen />
+    }
+
     return (
       <View style={stylesGameplayMain.container}>
         <Header
