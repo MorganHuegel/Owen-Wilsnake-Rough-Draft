@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, Animated } from 'react-native';
 
 import { Header } from './Header';
+import { MapMain } from './map/MapMain';
 
 /// LOAD THE SOUND BYTES //////////////////////////////////////
 let Sound = require('react-native-sound');
@@ -50,15 +51,19 @@ export class GameplayMain extends React.Component {
 
   gameplayMainStyles = {
     view: {
-      backgroundColor: 'red'
+      backgroundColor: 'red',
+      display: 'flex',
+      flex: 1,
+      borderWidth: 2,
+      borderColor: 'rgb(255, 255, 255)'
     }
   }
 
   render(){
     return (
       <Animated.View style={this.gameplayMainStyles.view}>
-        <Header/>
-        <Text>Gameplay2</Text>
+        <Header />
+        <MapMain />
       </Animated.View>
     )
   }
