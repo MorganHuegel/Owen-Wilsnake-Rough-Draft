@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Animated } from 'react-native';
 
 import { Header } from './Header';
 
@@ -48,13 +48,18 @@ export class GameplayMain extends React.Component {
     })
   }
 
+  gameplayMainStyles = {
+    view: {
+      backgroundColor: 'red'
+    }
+  }
 
   render(){
     return (
-      <View>
+      <Animated.View style={this.gameplayMainStyles.view}>
         <Header/>
         <Text>Gameplay2</Text>
-      </View>
+      </Animated.View>
     )
   }
 }
