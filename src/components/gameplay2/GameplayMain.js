@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, View, Animated, Easing } from 'react-native';
+import { Animated, Easing } from 'react-native';
 
-import { Header } from './Header';
+import { Header } from './header/Header';
 import { MapMain } from './map/MapMain';
 
 
@@ -64,10 +64,19 @@ export class GameplayMain extends React.Component {
   }
 
 
+  componentWillUnmount(){
+    // Animated.timing(this.state.viewOpacity, {
+    //   toValue: 0,
+    //   duration: 1000,
+    //   easing: Easing.linear
+    // }).start()
+  }
+
+
   render(){
     return (
       <Animated.View style={this.gameplayMainStyles.view}>
-        <Header />
+        <Header backToLanding={this.props.backToLanding}/>
         <MapMain />
       </Animated.View>
     )
