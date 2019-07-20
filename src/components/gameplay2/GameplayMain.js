@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, View, Animated } from 'react-native';
+import { Text, View, Animated, Easing } from 'react-native';
 
 import { Header } from './Header';
 import { MapMain } from './map/MapMain';
+
 
 /// LOAD THE SOUND BYTES //////////////////////////////////////
 let Sound = require('react-native-sound');
@@ -26,12 +27,16 @@ let soundBytes = [
 ]
 ////////////////////////////////////////////////////////////////
 
+
 export class GameplayMain extends React.Component {
   state = {
     owenSoundIndex: 0,
+    viewOpacity: new Animated.Value(0)
   }
 
+
   soundByte = new Sound(soundBytes[this.state.owenSoundIndex])
+
 
   playOwenSound = () => {
     this.soundByte.play()
@@ -49,15 +54,15 @@ export class GameplayMain extends React.Component {
     })
   }
 
-  gameplayMainStyles = {
-    view: {
-      backgroundColor: 'red',
-      display: 'flex',
-      flex: 1,
-      borderWidth: 2,
-      borderColor: 'rgb(255, 255, 255)'
-    }
+
+  componentDidMount(){
+    Animated.timing(this.state.viewOpacity, {
+      toValue: 1,
+      duration: 1000,
+      easing: Easing.linear
+    }).start()
   }
+
 
   render(){
     return (
@@ -66,5 +71,17 @@ export class GameplayMain extends React.Component {
         <MapMain />
       </Animated.View>
     )
+  }
+
+
+  gameplayMainStyles = {
+    view: {
+      opacity: this.state.viewOpacity,
+      backgroundColor: 'red',
+      display: 'flex',
+      flex: 1,
+      borderWidth: 2,
+      borderColor: 'rgb(255, 255, 255)'
+    }
   }
 }
