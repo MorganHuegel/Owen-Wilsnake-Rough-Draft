@@ -64,12 +64,15 @@ export class GameplayMain extends React.Component {
   }
 
 
-  componentWillUnmount(){
-    // Animated.timing(this.state.viewOpacity, {
-    //   toValue: 0,
-    //   duration: 1000,
-    //   easing: Easing.linear
-    // }).start()
+  componentDidUpdate(prevProps){
+    // Component is about to unmount
+    if(!prevProps.fadingOutGameplay && this.props.fadingOutGameplay) {
+      Animated.timing(this.state.viewOpacity, {
+        toValue: 0,
+        duration: this.props.fadeOutGameplayTime,
+        easing: Easing.linear
+      }).start()
+    }
   }
 
 

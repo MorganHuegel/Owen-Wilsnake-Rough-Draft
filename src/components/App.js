@@ -7,11 +7,18 @@ import { LandingMain } from './landing-page/LandingMain';
 
 export default class App extends React.Component {
   state = {
-    playing: false
+    playing: false,
+    fadingOutGameplay: false
   }
 
+  fadeOutGameplayTime = 600
+
   backToLanding = () => {
-    this.setState({playing: false})
+    this.setState({fadingOutGameplay: true}, () => {
+      setTimeout(() => {
+        this.setState({playing: false, fadingOutGameplay: false})
+      }, this.fadeOutGameplayTime + 150)
+    })
   }
 
   setToPlaying = () => {
@@ -20,7 +27,11 @@ export default class App extends React.Component {
 
   render() {
     let component = this.state.playing ? 
-      <GameplayMain backToLanding={this.backToLanding}/> :
+      <GameplayMain 
+        backToLanding={this.backToLanding} 
+        fadeOutGameplayTime={this.fadeOutGameplayTime} 
+        fadingOutGameplay={this.state.fadingOutGameplay}
+      /> :
       <LandingMain setToPlaying={this.setToPlaying}/>
 
     return (
