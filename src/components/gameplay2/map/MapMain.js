@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { View, Text } from 'react-native';
+import { CellsMain } from './CellsMain'
 
 export class MapMain extends React.Component {
   state = {
@@ -11,8 +12,8 @@ export class MapMain extends React.Component {
       numOfRows: null
     },
     cellDimensions: {
-      cellWidth: null,
-      cellHeight: null
+      width: null,
+      height: null
     }
   }
 
@@ -50,12 +51,10 @@ export class MapMain extends React.Component {
   render(){
     return (
       <View style={this.mapMainStyles.view} onLayout={event => this.setMapDimensions(event)}>
-        <Text>map width {this.state.mapDimensions.width}</Text>
-        <Text>map height {this.state.mapDimensions.height}</Text>
-        <Text>num Col {this.state.mapDimensions.numOfColumns}</Text>
-        <Text>num Row {this.state.mapDimensions.numOfRows}</Text>
-        <Text>cell width {this.state.cellDimensions.width}</Text>
-        <Text>cell height {this.state.cellDimensions.height}</Text>
+        <CellsMain 
+          mapDimensions={this.state.mapDimensions} 
+          cellDimensions={this.state.cellDimensions}
+        />
       </View>
     )
   }
