@@ -89,7 +89,7 @@ export class GameplayMain extends React.Component {
   gameplayMainStyles = {
     view: {
       opacity: this.state.viewOpacity,
-      backgroundColor: 'red',
+      backgroundColor: 'rgb(110, 110, 110)',
       display: 'flex',
       flex: 1,
       borderWidth: 2,

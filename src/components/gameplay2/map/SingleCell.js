@@ -4,6 +4,14 @@ import { View, Text } from 'react-native';
 
 export function SingleCell (props) {
   return (
-    <Text style={props.singleStylesheet}>1</Text>
+    <View style={props.singleStylesheet}>
+      <View style={{
+        width: 5, 
+        height: 5, 
+        backgroundColor: 'rgb(230, 230, 255)',
+        borderRadius: 50
+        }}>
+        </View>
+    </View>
   )
 }

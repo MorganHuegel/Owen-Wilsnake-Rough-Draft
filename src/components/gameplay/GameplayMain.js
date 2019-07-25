@@ -203,7 +203,6 @@ const stylesGameplayMain = {
     borderColor: 'rgb(120, 120, 120)'
   },
   header: {
-    // flex: 1,
     height: 60,
     backgroundColor: 'black'
   },

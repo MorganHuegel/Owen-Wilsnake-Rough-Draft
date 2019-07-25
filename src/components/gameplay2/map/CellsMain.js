@@ -19,6 +19,9 @@ export function CellsMain (props) {
     single: {
       flex: 1,
       width: props.cellDimensions.width,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     }
   }
 
