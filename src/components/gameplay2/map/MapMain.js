@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { CellsMain } from './CellsMain'
+import { OwenSnakeMain } from './owenSnake/OwenSnakeMain';
 
 export class MapMain extends React.Component {
   state = {
@@ -55,6 +56,7 @@ export class MapMain extends React.Component {
           mapDimensions={this.state.mapDimensions} 
           cellDimensions={this.state.cellDimensions}
         />
+        <OwenSnakeMain mapDimensions={this.state.mapDimensions} cellDimensions={this.state.cellDimensions}/>
       </View>
     )
   }
