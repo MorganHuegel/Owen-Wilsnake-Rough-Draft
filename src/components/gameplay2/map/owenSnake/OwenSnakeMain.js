@@ -20,7 +20,7 @@ export class OwenSnakeMain extends React.Component {
 
 
   componentDidUpdate(prevProps, prevState){
-    if (prevProps.lastPressed.toggleFlag === this.props.lastPressed.toggleFlag){
+    if (prevProps.lastPressed.numOfTouches === this.props.lastPressed.numOfTouches){
       return;
     }
 

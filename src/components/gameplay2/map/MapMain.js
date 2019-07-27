@@ -19,7 +19,7 @@ export class MapMain extends React.Component {
     lastPressed: {
       mapX: null,
       mapY: null,
-      toggleFlag: true /* Will toggle between true and false. 
+      numOfTouches: 0 /* Will increment with each touch. 
                        needed for child component OwenSnakeMain so that
                        ComponentDidUpdate method knows if it's a new press or not */
     }
@@ -58,7 +58,7 @@ export class MapMain extends React.Component {
       lastPressed: {
         mapX, 
         mapY, 
-        toggleFlag: !this.state.lastPressed.toggleFlag
+        numOfTouches: this.state.lastPressed.numOfTouches + 1
       }
     })
   }
