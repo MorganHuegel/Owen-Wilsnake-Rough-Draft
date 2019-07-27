@@ -31,7 +31,8 @@ let soundBytes = [
 export class GameplayMain extends React.Component {
   state = {
     owenSoundIndex: 0,
-    viewOpacity: new Animated.Value(0)
+    viewOpacity: new Animated.Value(0),
+    headerHeight: 0
   }
 
 
@@ -75,12 +76,21 @@ export class GameplayMain extends React.Component {
     }
   }
 
+  setHeaderHeight(event){
+    const mapHeight = event.nativeEvent.layout.height - 4 //<-- 4px border
+    this.setState({
+      headerHeight: 1 / 8 * mapHeight
+    })
+  }
+
 
   render(){
     return (
-      <Animated.View style={this.gameplayMainStyles.view}>
+      <Animated.View style={this.gameplayMainStyles.view} onLayout={event => this.setHeaderHeight(event)}>
         <Header backToLanding={this.props.backToLanding}/>
-        <MapMain />
+        <MapMain 
+          screenToMapXOffset={this.gameplayMainStyles.view.borderWidth + this.props.screenPaddingX}
+          screenToMapYOffset={this.gameplayMainStyles.view.borderWidth + this.props.screenPaddingY + this.state.headerHeight}/>
       </Animated.View>
     )
   }

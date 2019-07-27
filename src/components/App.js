@@ -32,6 +32,8 @@ export default class App extends React.Component {
         backToLanding={this.backToLanding} 
         fadeOutGameplayTime={this.fadeOutGameplayTime} 
         fadingOutGameplay={this.state.fadingOutGameplay}
+        screenPaddingX={stylesApp.container.paddingHorizontal}
+        screenPaddingY={stylesApp.container.paddingVertical}
       /> :
       <LandingMain setToPlaying={this.setToPlaying}/>
 

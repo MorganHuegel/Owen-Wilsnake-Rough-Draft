@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { CellsMain } from './CellsMain'
 import { OwenSnakeMain } from './owenSnake/OwenSnakeMain';
 
@@ -43,6 +43,15 @@ export class MapMain extends React.Component {
     })
   }
 
+  onPressMap(event){
+    let { pageX, pageY } = event.nativeEvent
+    const mapX = event.nativeEvent.pageX - this.props.screenToMapXOffset
+    const mapY = event.nativeEvent.pageY - this.props.screenToMapYOffset
+    console.log(event.nativeEvent)
+    console.log(pageX, mapX)
+    console.log(pageY, mapY)
+  }
+
   mapMainStyles = {
     view: {
       flex: 7
@@ -57,13 +66,13 @@ export class MapMain extends React.Component {
       null
 
     return (
-      <View style={this.mapMainStyles.view} onLayout={event => this.setMapDimensions(event)}>
+      <TouchableOpacity style={this.mapMainStyles.view} onLayout={event => this.setMapDimensions(event)} onPress={event => this.onPressMap(event)}>
         <CellsMain 
           mapDimensions={this.state.mapDimensions} 
           cellDimensions={this.state.cellDimensions}
         />
         {owenSnake}
-      </View>
+      </TouchableOpacity>
     )
   }
 }

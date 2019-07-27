@@ -12,11 +12,6 @@ export class OwenSnakeMain extends React.Component {
           left: new Animated.Value(0),
           top: new Animated.Value(0),
           moving: 'right'
-        },
-        {
-          left: new Animated.Value(0),
-          top: new Animated.Value(0),
-          moving: 'right'
         }
       ]
     }
@@ -81,14 +76,10 @@ export class OwenSnakeMain extends React.Component {
   }
 
   componentDidMount(){
-    this._goRight(0)
-    this._goDown(1)
-    setTimeout(() => {
-      this._goDown(0)
-    }, 1000)
-    setTimeout(() => {
-      this._goDown(1)
-    }, 4000)
+    //this._goRight(0)
+    //setTimeout(() => {
+    //  this._goDown(0)
+    //}, 1000)
   }
 
 
