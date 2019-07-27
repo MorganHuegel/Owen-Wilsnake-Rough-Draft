@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { View, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { CellsMain } from './CellsMain'
 import { OwenSnakeMain } from './owenSnake/OwenSnakeMain';
+import { ChickenWing } from './ChickenWing';
 
 export class MapMain extends React.Component {
   state = {
@@ -22,7 +23,20 @@ export class MapMain extends React.Component {
       numOfTouches: 0 /* Will increment with each touch. 
                        needed for child component OwenSnakeMain so that
                        ComponentDidUpdate method knows if it's a new press or not */
+    },
+    chickenWing: {
+      left: null,
+      top: null
     }
+  }
+
+  setChickenWing(){
+    const xCoord = Math.floor((Math.random()) * (this.state.mapDimensions.width - this.state.cellDimensions.width))
+    const yCoord = Math.floor((Math.random()) * (this.state.mapDimensions.height - this.state.cellDimensions.height))
+
+    this.setState({chickenWing: {
+      left: xCoord, top: yCoord
+    }})
   }
 
   setMapDimensions(event){
@@ -36,6 +50,9 @@ export class MapMain extends React.Component {
     const cellWidth = mapWidth / numOfColumns
     const cellHeight = mapHeight / numOfRows
 
+    const xChickenCoord = Math.floor((Math.random()) * (mapWidth - cellWidth))
+    const yChickenCoord = Math.floor((Math.random()) * (mapHeight - cellHeight))
+
     this.setState({
       cellDimensions: {
         width: cellWidth,
@@ -46,6 +63,10 @@ export class MapMain extends React.Component {
         height: mapHeight,
         numOfColumns,
         numOfRows
+      },
+      chickenWing: {
+        left: xChickenCoord,
+        top: yChickenCoord
       }
     })
   }
@@ -76,6 +97,11 @@ export class MapMain extends React.Component {
       <OwenSnakeMain mapDimensions={this.state.mapDimensions} cellDimensions={this.state.cellDimensions} lastPressed={this.state.lastPressed}/> :
       null
 
+    const chickenWing =
+      this.state.chickenWing.left ?
+      <ChickenWing cellDimensions={this.state.cellDimensions} chickenPosition={this.state.chickenWing}/> :
+      null
+
     return (
       <TouchableOpacity 
         style={this.mapMainStyles.touchableOpacity} 
@@ -87,6 +113,7 @@ export class MapMain extends React.Component {
           mapDimensions={this.state.mapDimensions} 
           cellDimensions={this.state.cellDimensions}
         />
+        {chickenWing}
         {owenSnake}
       </TouchableOpacity>
     )
