@@ -77,9 +77,9 @@ export class GameplayMain extends React.Component {
   }
 
   setHeaderHeight(event){
-    const mapHeight = event.nativeEvent.layout.height - 4 //<-- 4px border
+    const mapHeight = event.nativeEvent.layout.height //<-- 4px border
     this.setState({
-      headerHeight: 1 / 8 * mapHeight
+      headerHeight: 1 / 8 * (mapHeight - 4)
     })
   }
 

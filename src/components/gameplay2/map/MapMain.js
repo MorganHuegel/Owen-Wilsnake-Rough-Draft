@@ -15,6 +15,13 @@ export class MapMain extends React.Component {
     cellDimensions: {
       width: null,
       height: null
+    },
+    lastPressed: {
+      mapX: null,
+      mapY: null,
+      toggleFlag: true /* Will toggle between true and false. 
+                       needed for child component OwenSnakeMain so that
+                       ComponentDidUpdate method knows if it's a new press or not */
     }
   }
 
@@ -44,16 +51,20 @@ export class MapMain extends React.Component {
   }
 
   onPressMap(event){
-    let { pageX, pageY } = event.nativeEvent
     const mapX = event.nativeEvent.pageX - this.props.screenToMapXOffset
     const mapY = event.nativeEvent.pageY - this.props.screenToMapYOffset
-    console.log(event.nativeEvent)
-    console.log(pageX, mapX)
-    console.log(pageY, mapY)
+
+    this.setState({
+      lastPressed: {
+        mapX, 
+        mapY, 
+        toggleFlag: !this.state.lastPressed.toggleFlag
+      }
+    })
   }
 
   mapMainStyles = {
-    view: {
+    touchableOpacity: {
       flex: 7
     }
   }
@@ -62,11 +73,16 @@ export class MapMain extends React.Component {
     // Wait until Map Dimensions are calculated to display the Owen Snake
     const owenSnake = 
       this.state.cellDimensions.width ?
-      <OwenSnakeMain mapDimensions={this.state.mapDimensions} cellDimensions={this.state.cellDimensions}/> :
+      <OwenSnakeMain mapDimensions={this.state.mapDimensions} cellDimensions={this.state.cellDimensions} lastPressed={this.state.lastPressed}/> :
       null
 
     return (
-      <TouchableOpacity style={this.mapMainStyles.view} onLayout={event => this.setMapDimensions(event)} onPress={event => this.onPressMap(event)}>
+      <TouchableOpacity 
+        style={this.mapMainStyles.touchableOpacity} 
+        activeOpacity={0.8}
+        onLayout={event => this.setMapDimensions(event)} 
+        onPress={event => this.onPressMap(event)}
+        >
         <CellsMain 
           mapDimensions={this.state.mapDimensions} 
           cellDimensions={this.state.cellDimensions}
