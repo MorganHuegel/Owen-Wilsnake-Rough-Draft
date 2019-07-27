@@ -50,13 +50,19 @@ export class MapMain extends React.Component {
   }
 
   render(){
+    // Wait until Map Dimensions are calculated to display the Owen Snake
+    const owenSnake = 
+      this.state.cellDimensions.width ?
+      <OwenSnakeMain mapDimensions={this.state.mapDimensions} cellDimensions={this.state.cellDimensions}/> :
+      null
+
     return (
       <View style={this.mapMainStyles.view} onLayout={event => this.setMapDimensions(event)}>
         <CellsMain 
           mapDimensions={this.state.mapDimensions} 
           cellDimensions={this.state.cellDimensions}
         />
-        <OwenSnakeMain mapDimensions={this.state.mapDimensions} cellDimensions={this.state.cellDimensions}/>
+        {owenSnake}
       </View>
     )
   }
