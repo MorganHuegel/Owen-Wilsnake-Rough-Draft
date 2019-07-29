@@ -30,7 +30,10 @@ export class OwenSnakeMain extends React.Component {
 
 
   owenEatsChicken(){
+    this.removeListenersForChicken()
     this.props.playOwenSound()
+    this.props.setChickenWing()
+    this.addListenersForChickenWing()
     console.log('ATE IT! WOWWWW!')
   }
 

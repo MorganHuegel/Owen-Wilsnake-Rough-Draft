@@ -59,4 +59,13 @@ export function addListenersForChickenWing () {
 export function removeListenersForChicken () {
   this.state.snakeBody[0].left.removeListener(this.state.snakeBody[0].listeners.chickenWingLeftId)
   this.state.snakeBody[0].top.removeListener(this.state.snakeBody[0].listeners.chickenWingTopId)
+  const updatedListeners = Object.assign({}, this.state.snakeBody[0].listerners, {
+    chickenWingLeftId: null,
+    chickenWingLeftAligned: false,
+    chickenWingTop: null,
+    chickenWingTopAligned: false
+  })
+  const updatedSnakeBody = [...this.state.snakeBody]
+  updatedSnakeBody[0].listeners = updatedListeners
+  this.setState({snakeBody: updatedSnakeBody})
 }
