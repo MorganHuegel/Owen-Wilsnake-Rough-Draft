@@ -3,6 +3,8 @@ import React from 'react';
 import { View, Animated, Easing } from 'react-native';
 import { SingleOwenFace } from './SingleOwenFace';
 
+import { addListenersForChickenWing, removeListenersForChicken } from './OwenSnakeMainUtils';
+
 export class OwenSnakeMain extends React.Component {
   constructor (props) {
     super(props)
@@ -11,17 +13,36 @@ export class OwenSnakeMain extends React.Component {
         {
           left: new Animated.Value(1),
           top: new Animated.Value(1),
-          moving: 'right'
+          moving: 'right',
+          listeners: {
+            chickenWingLeftId: null,
+            chickenWingLeftAligned: false,
+            chickenWingTop: null,
+            chickenWingTopAligned: false
+          }
         }
       ]
     }
+    this.addListenersForChickenWing = addListenersForChickenWing.bind(this)
+    this.removeListenersForChicken = removeListenersForChicken.bind(this)
     this.millisecondsPerPixel = 4000 / this.props.mapDimensions.width
+  }
+
+
+  owenEatsChicken(){
+    this.props.playOwenSound()
+    console.log('ATE IT! WOWWWW!')
   }
 
 
   componentDidUpdate(prevProps, prevState){
     if (prevProps.lastPressed.numOfTouches === this.props.lastPressed.numOfTouches){
       return;
+    }
+
+    if (prevProps.chickenWing.left !== this.props.chickenWing.left) {
+      this.removeListenersForChicken()
+      this.addListenersForChickenWing()
     }
 
     const leadOwenCenterX = this.state.snakeBody[0].left.__getValue() + (1 / 2 * this.props.cellDimensions.width)
@@ -115,6 +136,7 @@ export class OwenSnakeMain extends React.Component {
 
   componentDidMount(){
     this._goRight(0)
+    this.addListenersForChickenWing()
     this.state.snakeBody[0].left.addListener( ({value}) => {
       if (value === 0 || value === this.props.mapDimensions.width - this.props.cellDimensions.width) {
         console.log('DEAD! (SIDEWAYS)')

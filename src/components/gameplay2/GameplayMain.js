@@ -90,7 +90,9 @@ export class GameplayMain extends React.Component {
         <Header backToLanding={this.props.backToLanding}/>
         <MapMain 
           screenToMapXOffset={this.gameplayMainStyles.view.borderWidth + this.props.screenPaddingX}
-          screenToMapYOffset={this.gameplayMainStyles.view.borderWidth + this.props.screenPaddingY + this.state.headerHeight}/>
+          screenToMapYOffset={this.gameplayMainStyles.view.borderWidth + this.props.screenPaddingY + this.state.headerHeight}
+          playOwenSound={this.playOwenSound}
+        />
       </Animated.View>
     )
   }

@@ -30,6 +30,7 @@ export class MapMain extends React.Component {
     }
   }
 
+
   setChickenWing(){
     const xCoord = Math.floor((Math.random()) * (this.state.mapDimensions.width - this.state.cellDimensions.width))
     const yCoord = Math.floor((Math.random()) * (this.state.mapDimensions.height - this.state.cellDimensions.height))
@@ -38,6 +39,7 @@ export class MapMain extends React.Component {
       left: xCoord, top: yCoord
     }})
   }
+
 
   setMapDimensions(event){
     //Set Map Dimensions based on size of View component
@@ -71,6 +73,7 @@ export class MapMain extends React.Component {
     })
   }
 
+
   onPressMap(event){
     const mapX = event.nativeEvent.pageX - this.props.screenToMapXOffset
     const mapY = event.nativeEvent.pageY - this.props.screenToMapYOffset
@@ -84,17 +87,24 @@ export class MapMain extends React.Component {
     })
   }
 
+
   mapMainStyles = {
     touchableOpacity: {
       flex: 7
     }
   }
 
+
   render(){
     // Wait until Map Dimensions are calculated to display the Owen Snake
     const owenSnake = 
       this.state.cellDimensions.width ?
-      <OwenSnakeMain mapDimensions={this.state.mapDimensions} cellDimensions={this.state.cellDimensions} lastPressed={this.state.lastPressed}/> :
+      <OwenSnakeMain 
+        mapDimensions={this.state.mapDimensions} 
+        cellDimensions={this.state.cellDimensions} 
+        lastPressed={this.state.lastPressed}
+        playOwenSound={this.props.playOwenSound}
+        chickenWing={this.state.chickenWing}/> :
       null
 
     const chickenWing =
