@@ -32,7 +32,6 @@ export class MapMain extends React.Component {
 
 
   setChickenWing = () => {
-    console.log('In set chicken wing: ', this.state)
     const xCoord = Math.floor((Math.random()) * (this.state.mapDimensions.width - this.state.cellDimensions.width))
     const yCoord = Math.floor((Math.random()) * (this.state.mapDimensions.height - this.state.cellDimensions.height))
 

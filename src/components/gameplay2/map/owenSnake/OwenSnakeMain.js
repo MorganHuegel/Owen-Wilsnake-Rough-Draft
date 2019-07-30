@@ -30,6 +30,7 @@ export class OwenSnakeMain extends React.Component {
 
 
   owenEatsChicken(){
+    this.addOwenFace()
     this.removeListenersForChicken()
     this.props.playOwenSound()
     this.props.setChickenWing()
@@ -150,6 +151,37 @@ export class OwenSnakeMain extends React.Component {
         console.log('DEAD! (VERTICALLY)')
       }
     })
+  }
+
+
+  addOwenFace(){
+    const updatedSnakeBody = [...this.state.snakeBody]
+    let newLeft = updatedSnakeBody[updatedSnakeBody.length - 1].left.__getValue()
+    let newTop = updatedSnakeBody[updatedSnakeBody.length - 1].top.__getValue()
+    switch (updatedSnakeBody[updatedSnakeBody.length - 1].moving) {
+      case('up'):
+        newTop += this.props.cellDimensions.height
+        break
+      case('down'):
+        newTop -= this.props.cellDimensions.height
+        break
+      case('left'):
+        newLeft += this.props.cellDimensions.width
+        break
+      case('right'):
+        newLeft -= this.props.cellDimensions.width
+        break
+      default:
+        console.log('Probably should error handle here in AddOwenFace method')
+    }
+
+    updatedSnakeBody.push({
+      left: new Animated.Value(newLeft),
+      top: new Animated.Value(newTop),
+      moving: this.state.snakeBody[this.state.snakeBody.length - 1].moving
+    })
+
+    this.setState({snakeBody: updatedSnakeBody})
   }
 
 
