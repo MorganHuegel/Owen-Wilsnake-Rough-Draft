@@ -3,7 +3,15 @@ import React from 'react';
 import { View, Animated, Easing } from 'react-native';
 import { SingleOwenFace } from './SingleOwenFace';
 
-import { addListenersForChickenWing, removeListenersForChicken } from './OwenSnakeMainUtils';
+import { 
+  addListenersForChickenWing, 
+  removeListenersForChicken, 
+  _goUp, _goDown, _goLeft, _goRight, 
+  owenEatsChicken, 
+  setNewDirection,
+  addOwenFace,
+  beginFaceAnimation
+} from './OwenSnakeMainUtils';
 
 export class OwenSnakeMain extends React.Component {
   constructor (props) {
@@ -25,27 +33,34 @@ export class OwenSnakeMain extends React.Component {
     }
     this.addListenersForChickenWing = addListenersForChickenWing.bind(this)
     this.removeListenersForChicken = removeListenersForChicken.bind(this)
+    this._goDown = _goDown.bind(this)
+    this._goUp = _goUp.bind(this)
+    this._goLeft = _goLeft.bind(this)
+    this._goRight = _goRight.bind(this)
+    this.owenEatsChicken = owenEatsChicken.bind(this)
+    this.setNewDirection = setNewDirection.bind(this)
+    this.addOwenFace = addOwenFace.bind(this)
+    this.beginFaceAnimation = beginFaceAnimation.bind(this)
     this.millisecondsPerPixel = 4000 / this.props.mapDimensions.width
   }
 
 
-  owenEatsChicken(){
-    this.removeListenersForChicken()
-    this.props.playOwenSound()
-    this.props.setChickenWing()
-    this.addListenersForChickenWing()
-    console.log('ATE IT! WOWWWW!')
-  }
-
-
   componentDidUpdate(prevProps, prevState){
+    if (prevState.snakeBody.length !== this.state.snakeBody.length) {
+      // A new snake face was added
+      this.beginFaceAnimation(this.state.snakeBody.length - 1)
+    }
+    
     if (prevProps.lastPressed.numOfTouches === this.props.lastPressed.numOfTouches){
+      // Used to break out of the Updated-State infinite loop
       return;
     }
 
     if (prevProps.chickenWing.left !== this.props.chickenWing.left) {
+      // If chicken got eaten, change the Animation Listener on the first Owen Head
       this.removeListenersForChicken()
       this.addListenersForChickenWing()
+      return;
     }
 
     const leadOwenCenterX = this.state.snakeBody[0].left.__getValue() + (1 / 2 * this.props.cellDimensions.width)
@@ -67,73 +82,6 @@ export class OwenSnakeMain extends React.Component {
         this._goRight(0)
       }     
     }
-  }
-
-
-  setNewDirection(direction, callback){
-    const newSnakeBody = [...this.state.snakeBody]
-    newSnakeBody[0].moving = direction
-    this.setState({snakeBody: newSnakeBody}, callback)
-  }
-
-
-  _goRight(snakeBodyIndex){
-    const pxToGo = (this.props.mapDimensions.width - this.props.cellDimensions.width) - this.state.snakeBody[snakeBodyIndex].left.__getValue()
-    const timeBeforeWall = this.millisecondsPerPixel * pxToGo
-    this.state.snakeBody[snakeBodyIndex].top.stopAnimation()
-    
-    this.setNewDirection('right', () => {
-      Animated.timing(this.state.snakeBody[snakeBodyIndex].left, {
-        toValue: this.props.mapDimensions.width - this.props.cellDimensions.width,
-        easing: Easing.linear,
-        duration: timeBeforeWall
-      }).start()
-    })
-  }
-
-
-  _goLeft(snakeBodyIndex){
-    const pxToGo = this.state.snakeBody[snakeBodyIndex].left.__getValue()
-    const timeBeforeWall = this.millisecondsPerPixel * pxToGo
-    this.state.snakeBody[snakeBodyIndex].top.stopAnimation()
-
-    this.setNewDirection('left', () => {
-      Animated.timing(this.state.snakeBody[snakeBodyIndex].left, {
-        toValue: 0,
-        easing: Easing.linear,
-        duration: timeBeforeWall
-      }).start()      
-    })
-  }
-
-
-  _goDown(snakeBodyIndex){
-    const pxToGo = (this.props.mapDimensions.height - this.props.cellDimensions.height) - this.state.snakeBody[snakeBodyIndex].top.__getValue()
-    const timeBeforeWall = this.millisecondsPerPixel * pxToGo
-    this.state.snakeBody[snakeBodyIndex].left.stopAnimation()
-
-    this.setNewDirection('down', () => {
-      Animated.timing(this.state.snakeBody[snakeBodyIndex].top, {
-        toValue: this.props.mapDimensions.height - this.props.cellDimensions.height,
-        easing: Easing.linear,
-        duration: timeBeforeWall
-      }).start()      
-    })
-  }
-
-
-  _goUp(snakeBodyIndex){
-    const pxToGo = this.state.snakeBody[snakeBodyIndex].top.__getValue()
-    const timeBeforeWall = this.millisecondsPerPixel * pxToGo
-    this.state.snakeBody[snakeBodyIndex].left.stopAnimation()
-
-    this.setNewDirection('up', () => {
-      Animated.timing(this.state.snakeBody[snakeBodyIndex].top, {
-        toValue: 0,
-        easing: Easing.linear,
-        duration: timeBeforeWall
-      }).start()      
-    })
   }
 
 
