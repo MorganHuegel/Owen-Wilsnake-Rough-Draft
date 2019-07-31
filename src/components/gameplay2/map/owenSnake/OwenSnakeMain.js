@@ -181,7 +181,22 @@ export class OwenSnakeMain extends React.Component {
       moving: this.state.snakeBody[this.state.snakeBody.length - 1].moving
     })
 
-    this.setState({snakeBody: updatedSnakeBody})
+    this.setState({snakeBody: updatedSnakeBody}, () => {
+      switch(updatedSnakeBody[updatedSnakeBody.length - 1].moving){
+        case('up'):
+          this._goUp(updatedSnakeBody.length - 1)
+          break
+        case('down'):
+          this._goDown(updatedSnakeBody.length - 1)
+          break
+        case('left'):
+          this._goLeft(updatedSnakeBody.length - 1)
+          break
+        case('right'):
+          this._goRight(updatedSnakeBody.length - 1)
+          break
+      }
+    })
   }
 
 
