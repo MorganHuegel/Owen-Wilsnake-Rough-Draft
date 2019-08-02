@@ -35,18 +35,17 @@ export class OwenSnakeMain extends React.Component {
     this.props.playOwenSound()
     this.props.setChickenWing()
     this.addListenersForChickenWing()
-    console.log('ATE IT! WOWWWW!')
   }
 
 
   async componentDidUpdate(prevProps, prevState){
-    if (prevProps.lastPressed.numOfTouches === this.props.lastPressed.numOfTouches){
-      return;
-    }
-
     if (prevProps.chickenWing.left !== this.props.chickenWing.left) {
       this.removeListenersForChicken()
       this.addListenersForChickenWing()
+    }
+
+    if (prevProps.lastPressed.numOfTouches === this.props.lastPressed.numOfTouches){
+      return;
     }
 
     const leadOwenCenterX = this.state.snakeBody[0].left.__getValue() + (1 / 2 * this.props.cellDimensions.width)
@@ -55,7 +54,7 @@ export class OwenSnakeMain extends React.Component {
 
     if (currentDirection === 'right' || currentDirection === 'left') {
       if (this.props.lastPressed.mapY < leadOwenCenterY) {
-        for (const i of [...Array(10).keys()]) {
+        for (const i of [...Array(1000).keys()]) {
           try {
             this.validateSnakeBodyIndex(i)
             this._goUp(i)
@@ -65,7 +64,7 @@ export class OwenSnakeMain extends React.Component {
           }
         }
       } else {
-        for (const i of [...Array(10).keys()]) {
+        for (const i of [...Array(1000).keys()]) {
           try {
             this.validateSnakeBodyIndex(i)
             this._goDown(i)
@@ -79,7 +78,7 @@ export class OwenSnakeMain extends React.Component {
     
     else {
       if (this.props.lastPressed.mapX < leadOwenCenterX) {
-        for (const i of [...Array(10).keys()]) {
+        for (const i of [...Array(1000).keys()]) {
           try {
             this.validateSnakeBodyIndex(i)
             this._goLeft(i)
@@ -89,7 +88,7 @@ export class OwenSnakeMain extends React.Component {
           }
         }
       } else {
-        for (const i of [...Array(10).keys()]) {
+        for (const i of [...Array(1000).keys()]) {
           try {
             this.validateSnakeBodyIndex(i)
             this._goRight(i)
@@ -117,9 +116,9 @@ export class OwenSnakeMain extends React.Component {
   }
 
 
-  setNewDirection(direction, callback){
+  setNewDirection(direction, snakeIndex, callback){
     const newSnakeBody = [...this.state.snakeBody]
-    newSnakeBody[0].moving = direction
+    newSnakeBody[snakeIndex].moving = direction
     this.setState({snakeBody: newSnakeBody}, callback)
   }
 
@@ -138,7 +137,7 @@ export class OwenSnakeMain extends React.Component {
       )
     }
     
-    this.setNewDirection('right', () => {
+    this.setNewDirection('right', snakeBodyIndex, () => {
       Animated.timing(this.state.snakeBody[snakeBodyIndex].left, {
         toValue: this.props.mapDimensions.width - this.props.cellDimensions.width,
         easing: Easing.linear,
@@ -162,7 +161,7 @@ export class OwenSnakeMain extends React.Component {
       )
     }
 
-    this.setNewDirection('left', () => {
+    this.setNewDirection('left', snakeBodyIndex, () => {
       Animated.timing(this.state.snakeBody[snakeBodyIndex].left, {
         toValue: 0,
         easing: Easing.linear,
@@ -186,7 +185,7 @@ export class OwenSnakeMain extends React.Component {
       )
     }
 
-    this.setNewDirection('down', () => {
+    this.setNewDirection('down', snakeBodyIndex, () => {
       Animated.timing(this.state.snakeBody[snakeBodyIndex].top, {
         toValue: this.props.mapDimensions.height - this.props.cellDimensions.height,
         easing: Easing.linear,
@@ -210,7 +209,7 @@ export class OwenSnakeMain extends React.Component {
       )
     }
 
-    this.setNewDirection('up', () => {
+    this.setNewDirection('up', snakeBodyIndex, () => {
       Animated.timing(this.state.snakeBody[snakeBodyIndex].top, {
         toValue: 0,
         easing: Easing.linear,
@@ -262,7 +261,6 @@ export class OwenSnakeMain extends React.Component {
       top: new Animated.Value(newTop),
       moving: this.state.snakeBody[this.state.snakeBody.length - 1].moving
     })
-    console.log('UPDATED SNAKE BODY: ', updatedSnakeBody)
     this.setState({snakeBody: updatedSnakeBody}, () => {
       switch(updatedSnakeBody[updatedSnakeBody.length - 1].moving){
         case('up'):
