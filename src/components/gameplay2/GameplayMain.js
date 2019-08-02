@@ -95,9 +95,9 @@ export class GameplayMain extends React.Component {
     const cellWidth = gameplayWidth / numOfColumns
     const cellHeight = cellWidth
 
-    const numOfRows = Math.floor( (gameplayHeight * 7/8) / cellHeight)
-    const spaceLeftAtBottom = (gameplayHeight * 7/8) - (numOfRows * cellHeight)
-    const headerHeight = gameplayHeight * 1/8 + spaceLeftAtBottom
+    const numOfRows = Math.floor( (gameplayHeight * 8/9) / cellHeight)
+    const spaceLeftAtBottom = (gameplayHeight * 8/9) - (numOfRows * cellHeight)
+    const headerHeight = gameplayHeight * 1/9 + spaceLeftAtBottom
     const mapHeight = gameplayHeight - headerHeight
 
     this.setState({

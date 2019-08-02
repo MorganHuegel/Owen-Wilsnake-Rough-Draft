@@ -109,8 +109,8 @@ export class OwenSnakeMain extends React.Component {
 
   delayDirectionChange (direction) {
     const delayTimeMs = (direction === 'up' || direction === 'down') 
-      ? this.millisecondsPerPixel * this.props.cellDimensions.height
-      : this.millisecondsPerPixel * this.props.cellDimensions.width
+      ? this.millisecondsPerPixel * this.props.cellDimensions.height - 7
+      : this.millisecondsPerPixel * this.props.cellDimensions.width - 7
 
     return new Promise(resolve => setTimeout(resolve, delayTimeMs))
   }
