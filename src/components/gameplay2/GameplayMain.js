@@ -32,7 +32,17 @@ export class GameplayMain extends React.Component {
   state = {
     owenSoundIndex: 0,
     viewOpacity: new Animated.Value(0),
-    headerHeight: 0
+    mapDimensions: {
+      width: null, 
+      height: null, 
+      numOfColumns: null,
+      numOfRows: null,
+      headerHeight: null
+    },
+    cellDimensions: {
+      width: null,
+      height: null
+    }
   }
 
 
@@ -76,23 +86,54 @@ export class GameplayMain extends React.Component {
     }
   }
 
-  setHeaderHeight(event){
-    const mapHeight = event.nativeEvent.layout.height //<-- 4px border
+
+  setMapDimensions(event){
+    const gameplayHeight = event.nativeEvent.layout.height - (2 * this.gameplayMainStyles.view.borderWidth)  //<-- 4px border
+    const gameplayWidth = event.nativeEvent.layout.width - (2 * this.gameplayMainStyles.view.borderWidth)
+
+    const numOfColumns = Math.floor(gameplayWidth / 30)
+    const cellWidth = gameplayWidth / numOfColumns
+    const cellHeight = cellWidth
+
+    const numOfRows = Math.floor( (gameplayHeight * 7/8) / cellHeight)
+    const spaceLeftAtBottom = (gameplayHeight * 7/8) - (numOfRows * cellHeight)
+    const headerHeight = gameplayHeight * 1/8 + spaceLeftAtBottom
+    const mapHeight = gameplayHeight - headerHeight
+
     this.setState({
-      headerHeight: 1 / 8 * (mapHeight - 4)
+      mapDimensions: {
+        width: gameplayWidth,
+        height: mapHeight,
+        numOfColumns,
+        numOfRows,
+        headerHeight
+      },
+      cellDimensions: {
+        width: cellWidth,
+        height: cellHeight
+      }
     })
   }
 
 
+
   render(){
+    let mapMain, header
+    if (this.state.mapDimensions.height) {
+      mapMain = <MapMain 
+        screenToMapXOffset={this.gameplayMainStyles.view.borderWidth + this.props.screenPaddingX}
+        screenToMapYOffset={this.gameplayMainStyles.view.borderWidth + this.props.screenPaddingY + this.state.mapDimensions.headerHeight}
+        mapDimensions={this.state.mapDimensions} 
+        cellDimensions={this.state.cellDimensions}
+        playOwenSound={this.playOwenSound}
+      />
+      header = <Header backToLanding={this.props.backToLanding} mapDimensions={this.state.mapDimensions} />
+    }
+
     return (
-      <Animated.View style={this.gameplayMainStyles.view} onLayout={event => this.setHeaderHeight(event)}>
-        <Header backToLanding={this.props.backToLanding}/>
-        <MapMain 
-          screenToMapXOffset={this.gameplayMainStyles.view.borderWidth + this.props.screenPaddingX}
-          screenToMapYOffset={this.gameplayMainStyles.view.borderWidth + this.props.screenPaddingY + this.state.headerHeight}
-          playOwenSound={this.playOwenSound}
-        />
+      <Animated.View style={this.gameplayMainStyles.view} onLayout={event => this.setMapDimensions(event)}>
+        {header}
+        {mapMain}
       </Animated.View>
     )
   }
