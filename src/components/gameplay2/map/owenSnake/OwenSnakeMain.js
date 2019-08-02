@@ -39,7 +39,7 @@ export class OwenSnakeMain extends React.Component {
   }
 
 
-  componentDidUpdate(prevProps, prevState){
+  async componentDidUpdate(prevProps, prevState){
     if (prevProps.lastPressed.numOfTouches === this.props.lastPressed.numOfTouches){
       return;
     }
@@ -55,19 +55,40 @@ export class OwenSnakeMain extends React.Component {
 
     if (currentDirection === 'right' || currentDirection === 'left') {
       if (this.props.lastPressed.mapY < leadOwenCenterY) {
-        this._goUp(0)
+        for (const [i, owenFace] of this.state.snakeBody.entries()) {
+          this._goUp(i)
+          await this.delayDirectionChange('up')
+        }
       } else {
-        this._goDown(0)
+        for (const [i, owenFace] of this.state.snakeBody.entries()) {
+          this._goDown(i)
+          await this.delayDirectionChange('down')
+        }
       }
     } 
     
     else {
       if (this.props.lastPressed.mapX < leadOwenCenterX) {
-        this._goLeft(0)
+        for (const [i, owenFace] of this.state.snakeBody.entries()) {
+          this._goLeft(i)
+          await this.delayDirectionChange('left')
+        }
       } else {
-        this._goRight(0)
-      }     
+        for (const [i, owenFace] of this.state.snakeBody.entries()) {
+          this._goRight(i)
+          await this.delayDirectionChange('left')
+        }
+      }
     }
+  }
+
+  delayDirectionChange (direction) {
+    const delayTimeMs = (direction === 'up' || direction === 'down') 
+      // ? this.millisecondsPerPixel * this.props.cellDimensions.width - 20
+      // : this.millisecondsPerPixel * this.props.cellDimensions.height - 10
+      ? this.millisecondsPerPixel * this.props.cellDimensions.height
+      : this.millisecondsPerPixel * this.props.cellDimensions.width
+    return new Promise(resolve => setTimeout(resolve, delayTimeMs))
   }
 
 
@@ -79,9 +100,18 @@ export class OwenSnakeMain extends React.Component {
 
 
   _goRight(snakeBodyIndex){
+    if (snakeBodyIndex > 0) {
+      this.state.snakeBody[snakeBodyIndex].left.setValue(this.state.snakeBody[snakeBodyIndex - 1].left.__getValue() - this.props.cellDimensions.width)
+    }
     const pxToGo = (this.props.mapDimensions.width - this.props.cellDimensions.width) - this.state.snakeBody[snakeBodyIndex].left.__getValue()
     const timeBeforeWall = this.millisecondsPerPixel * pxToGo
     this.state.snakeBody[snakeBodyIndex].top.stopAnimation()
+
+    if (snakeBodyIndex !== 0) {
+      this.state.snakeBody[snakeBodyIndex].top.setValue(
+        this.state.snakeBody[snakeBodyIndex - 1].top.__getValue()
+      )
+    }
     
     this.setNewDirection('right', () => {
       Animated.timing(this.state.snakeBody[snakeBodyIndex].left, {
@@ -94,9 +124,18 @@ export class OwenSnakeMain extends React.Component {
 
 
   _goLeft(snakeBodyIndex){
+    if (snakeBodyIndex > 0) {
+      this.state.snakeBody[snakeBodyIndex].left.setValue(this.state.snakeBody[snakeBodyIndex - 1].left.__getValue() + this.props.cellDimensions.width)
+    }
     const pxToGo = this.state.snakeBody[snakeBodyIndex].left.__getValue()
     const timeBeforeWall = this.millisecondsPerPixel * pxToGo
     this.state.snakeBody[snakeBodyIndex].top.stopAnimation()
+
+    if (snakeBodyIndex !== 0) {
+      this.state.snakeBody[snakeBodyIndex].top.setValue(
+        this.state.snakeBody[snakeBodyIndex - 1].top.__getValue()
+      )
+    }
 
     this.setNewDirection('left', () => {
       Animated.timing(this.state.snakeBody[snakeBodyIndex].left, {
@@ -109,9 +148,18 @@ export class OwenSnakeMain extends React.Component {
 
 
   _goDown(snakeBodyIndex){
+    if (snakeBodyIndex > 0) {
+      this.state.snakeBody[snakeBodyIndex].top.setValue(this.state.snakeBody[snakeBodyIndex - 1].top.__getValue() - this.props.cellDimensions.height)
+    }
     const pxToGo = (this.props.mapDimensions.height - this.props.cellDimensions.height) - this.state.snakeBody[snakeBodyIndex].top.__getValue()
     const timeBeforeWall = this.millisecondsPerPixel * pxToGo
     this.state.snakeBody[snakeBodyIndex].left.stopAnimation()
+
+    if (snakeBodyIndex !== 0) {
+      this.state.snakeBody[snakeBodyIndex].left.setValue(
+        this.state.snakeBody[snakeBodyIndex - 1].left.__getValue()
+      )
+    }
 
     this.setNewDirection('down', () => {
       Animated.timing(this.state.snakeBody[snakeBodyIndex].top, {
@@ -124,9 +172,18 @@ export class OwenSnakeMain extends React.Component {
 
 
   _goUp(snakeBodyIndex){
+    if (snakeBodyIndex > 0) {
+      this.state.snakeBody[snakeBodyIndex].top.setValue(this.state.snakeBody[snakeBodyIndex - 1].top.__getValue() + this.props.cellDimensions.height)
+    }
     const pxToGo = this.state.snakeBody[snakeBodyIndex].top.__getValue()
     const timeBeforeWall = this.millisecondsPerPixel * pxToGo
     this.state.snakeBody[snakeBodyIndex].left.stopAnimation()
+
+    if (snakeBodyIndex !== 0) {
+      this.state.snakeBody[snakeBodyIndex].left.setValue(
+        this.state.snakeBody[snakeBodyIndex - 1].left.__getValue()
+      )
+    }
 
     this.setNewDirection('up', () => {
       Animated.timing(this.state.snakeBody[snakeBodyIndex].top, {
