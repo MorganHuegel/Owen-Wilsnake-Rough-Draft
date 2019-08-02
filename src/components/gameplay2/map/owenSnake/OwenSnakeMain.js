@@ -55,39 +55,64 @@ export class OwenSnakeMain extends React.Component {
 
     if (currentDirection === 'right' || currentDirection === 'left') {
       if (this.props.lastPressed.mapY < leadOwenCenterY) {
-        for (const [i, owenFace] of this.state.snakeBody.entries()) {
-          this._goUp(i)
-          await this.delayDirectionChange('up')
+        for (const i of [...Array(10).keys()]) {
+          try {
+            this.validateSnakeBodyIndex(i)
+            this._goUp(i)
+            await this.delayDirectionChange('up')
+          } catch (e) {
+            break;
+          }
         }
       } else {
-        for (const [i, owenFace] of this.state.snakeBody.entries()) {
-          this._goDown(i)
-          await this.delayDirectionChange('down')
+        for (const i of [...Array(10).keys()]) {
+          try {
+            this.validateSnakeBodyIndex(i)
+            this._goDown(i)
+            await this.delayDirectionChange('down')
+          } catch (e) {
+            break;
+          }
         }
       }
     } 
     
     else {
       if (this.props.lastPressed.mapX < leadOwenCenterX) {
-        for (const [i, owenFace] of this.state.snakeBody.entries()) {
-          this._goLeft(i)
-          await this.delayDirectionChange('left')
+        for (const i of [...Array(10).keys()]) {
+          try {
+            this.validateSnakeBodyIndex(i)
+            this._goLeft(i)
+            await this.delayDirectionChange('left')
+          } catch (e) {
+            break;
+          }
         }
       } else {
-        for (const [i, owenFace] of this.state.snakeBody.entries()) {
-          this._goRight(i)
-          await this.delayDirectionChange('left')
+        for (const i of [...Array(10).keys()]) {
+          try {
+            this.validateSnakeBodyIndex(i)
+            this._goRight(i)
+            await this.delayDirectionChange('right')
+          } catch (e) {
+            break;
+          }
         }
       }
     }
   }
 
+  validateSnakeBodyIndex(index){
+    if (index >= this.state.snakeBody.length) {
+      throw new Error('Break out of this loop')
+    }
+  }
+
   delayDirectionChange (direction) {
     const delayTimeMs = (direction === 'up' || direction === 'down') 
-      // ? this.millisecondsPerPixel * this.props.cellDimensions.width - 20
-      // : this.millisecondsPerPixel * this.props.cellDimensions.height - 10
       ? this.millisecondsPerPixel * this.props.cellDimensions.height
       : this.millisecondsPerPixel * this.props.cellDimensions.width
+
     return new Promise(resolve => setTimeout(resolve, delayTimeMs))
   }
 
@@ -237,7 +262,7 @@ export class OwenSnakeMain extends React.Component {
       top: new Animated.Value(newTop),
       moving: this.state.snakeBody[this.state.snakeBody.length - 1].moving
     })
-
+    console.log('UPDATED SNAKE BODY: ', updatedSnakeBody)
     this.setState({snakeBody: updatedSnakeBody}, () => {
       switch(updatedSnakeBody[updatedSnakeBody.length - 1].moving){
         case('up'):
