@@ -62,7 +62,7 @@ export function removeListenersForChicken () {
   const updatedListeners = Object.assign({}, this.state.snakeBody[0].listerners, {
     chickenWingLeftId: null,
     chickenWingLeftAligned: false,
-    chickenWingTop: null,
+    chickenWingTopId: null,
     chickenWingTopAligned: false
   })
   const updatedSnakeBody = [...this.state.snakeBody]
