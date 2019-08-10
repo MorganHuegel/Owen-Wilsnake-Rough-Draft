@@ -13,11 +13,15 @@ export class LogoMainOwenFace extends React.Component {
   render(){
     const logoMainOwenFaceStyle = {
       container: {
-        flex: 1
+        flex: 3,
+        justifyContent: 'center'
       },
       face: {
+        height: undefined,
+        width: undefined,
         flex: 1,
-        left: -100
+        resizeMode: 'contain',
+        top: -100
       }
     }
 
@@ -26,7 +30,7 @@ export class LogoMainOwenFace extends React.Component {
         <Animated.Image 
           source={require('../../../../OWEN-WILSON.png')} 
           style={logoMainOwenFaceStyle.face}
-          resizeMode='contain'/>
+          />
       </View>
     )
   }

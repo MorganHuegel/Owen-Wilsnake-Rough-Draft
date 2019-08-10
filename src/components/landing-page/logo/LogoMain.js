@@ -15,14 +15,16 @@ export function LogoMain(props){
       resizeMode: 'contain',
       width: undefined,
       height: undefined,
-      flex: 1
+      flex: 2,
+      zIndex: 1,
+      opacity: 0.9
     }
   }
 
   return (
     <View style={logoMainStyles.container} onLayout={(e) => console.log(e.nativeEvent.layout)}>
       <Image source={require('./logoWords.png')} style={logoMainStyles.logoWords}/>
-      {/* <LogoMainOwenFace /> */}
+      <LogoMainOwenFace />
     </View>
   )
 }
