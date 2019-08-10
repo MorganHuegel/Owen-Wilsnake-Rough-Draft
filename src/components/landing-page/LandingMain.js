@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
+import { View } from 'react-native';
 
-import { LogoMain } from './LogoMain';
+import { LogoMain } from './logo/LogoMain';
+import { StartButton } from './StartButton';
 
 export class LandingMain extends React.Component {
   landingMainStyles = {
@@ -15,11 +16,7 @@ export class LandingMain extends React.Component {
     return (
       <View style={this.landingMainStyles.main}>
         <LogoMain />
-
-        <View style={{flex: 1}}>
-          <Button onPress={this.props.setToPlaying} title="Start Playing"/>
-        </View>
-
+        <StartButton setToPlaying={this.props.setToPlaying}/>
       </View>
     )
   }

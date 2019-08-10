@@ -18,15 +18,13 @@ export class LogoMainOwenFace extends React.Component {
       face: {
         flex: 1,
         left: -100
-        // width: undefined,
-        // height: undefined
       }
     }
 
     return (
       <View style={logoMainOwenFaceStyle.container}>
         <Animated.Image 
-          source={require('../../../OWEN-WILSON.png')} 
+          source={require('../../../../OWEN-WILSON.png')} 
           style={logoMainOwenFaceStyle.face}
           resizeMode='contain'/>
       </View>
