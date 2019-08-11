@@ -14,6 +14,23 @@ export class LogoMainOwenFace extends React.Component {
     }
   }
 
+  componentDidMount(){
+    setTimeout( () => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(this.state.bottom, {
+            toValue: this.props.containerHeight * 1/6 + 40,
+            duration: 1000
+          }),
+          Animated.timing(this.state.bottom, {
+            toValue: this.props.containerHeight * 1/6,
+            duration: 1000
+          })
+        ])
+      ).start()      
+    }, this.props.animationDelay)
+  }
+
   render(){
     console.log('IN HERE', this.styling)
     return (

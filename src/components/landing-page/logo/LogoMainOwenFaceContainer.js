@@ -21,11 +21,10 @@ export class LogoMainOwenFaceContainer extends React.Component {
 
   render () {
     let owenFaces = []
-    const numOfFaces = 10
+    const numOfFaces = 7
 
     if (this.state.containerHeight && this.state.containerHeight) {
       for (let i = 0; i < numOfFaces; i++) {
-        console.log('i: ', i)
         const styleProps = {
           flex: 1,
           position: 'absolute',
@@ -37,7 +36,11 @@ export class LogoMainOwenFaceContainer extends React.Component {
         }
 
         owenFaces.push(
-          <LogoMainOwenFace key={'owenFace' + i} styleProps={styleProps} containerHeight={this.state.containerHeight}/>
+          <LogoMainOwenFace 
+            key={'owenFace' + i} 
+            styleProps={styleProps} 
+            containerHeight={this.state.containerHeight} 
+            animationDelay={i * 1000 / numOfFaces}/>
         )
       }
     }
