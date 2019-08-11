@@ -6,9 +6,9 @@ export function SingleCell (props) {
   return (
     <View style={props.singleStylesheet}>
       <View style={{
-        width: 5, 
-        height: 5, 
-        backgroundColor: 'rgb(230, 230, 255)',
+        width: 3, 
+        height: 3, 
+        backgroundColor: 'rgb(255, 255, 235)',
         borderRadius: 50
         }}>
         </View>
