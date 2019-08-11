@@ -10,7 +10,9 @@ export function LogoMain(props){
       backgroundColor: 'rgba(0, 0, 0, 0.2)',
       display: 'flex',
       justifyContent: 'center',
-      borderRadius: 100
+      borderRadius: 100,
+      borderColor: 'rgb(192,194,201)',
+      borderWidth: 3
     },
     logoWords: {
       resizeMode: 'contain',

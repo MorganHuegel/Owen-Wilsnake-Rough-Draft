@@ -53,6 +53,6 @@ const stylesApp = StyleSheet.create({
     alignItems: 'stretch',
     paddingVertical: 40,
     paddingHorizontal: 10,
-    backgroundColor: 'yellow'
+    backgroundColor: 'rgb(99,116,122)'
   }
 })
