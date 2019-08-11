@@ -3,15 +3,7 @@ import React from 'react';
 import { View, Animated, Easing } from 'react-native';
 import { SingleOwenFace } from './SingleOwenFace';
 
-import { 
-  addListenersForChickenWing, 
-  removeListenersForChicken, 
-  _goUp, _goDown, _goLeft, _goRight, 
-  owenEatsChicken, 
-  setNewDirection,
-  addOwenFace,
-  beginFaceAnimation
-} from './OwenSnakeMainUtils';
+import { addListenersForChickenWing, removeListenersForChicken } from './OwenSnakeMainUtils';
 
 export class OwenSnakeMain extends React.Component {
   constructor (props) {
@@ -33,14 +25,6 @@ export class OwenSnakeMain extends React.Component {
     }
     this.addListenersForChickenWing = addListenersForChickenWing.bind(this)
     this.removeListenersForChicken = removeListenersForChicken.bind(this)
-    this._goDown = _goDown.bind(this)
-    this._goUp = _goUp.bind(this)
-    this._goLeft = _goLeft.bind(this)
-    this._goRight = _goRight.bind(this)
-    this.owenEatsChicken = owenEatsChicken.bind(this)
-    this.setNewDirection = setNewDirection.bind(this)
-    this.addOwenFace = addOwenFace.bind(this)
-    this.beginFaceAnimation = beginFaceAnimation.bind(this)
     this.millisecondsPerPixel = 4000 / this.props.mapDimensions.width
   }
 
@@ -56,10 +40,8 @@ export class OwenSnakeMain extends React.Component {
 
   async componentDidUpdate(prevProps, prevState){
     if (prevProps.chickenWing.left !== this.props.chickenWing.left) {
-      // If chicken got eaten, change the Animation Listener on the first Owen Head
       this.removeListenersForChicken()
       this.addListenersForChickenWing()
-      return;
     }
 
     if (prevProps.lastPressed.numOfTouches === this.props.lastPressed.numOfTouches){
