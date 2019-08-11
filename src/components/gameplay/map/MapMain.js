@@ -45,7 +45,7 @@ export class MapMain extends React.Component {
         mapY, 
         numOfTouches: this.state.lastPressed.numOfTouches + 1
       }
-    })
+    }, () => this.props.incrementNumTouches())
   }
 
 
@@ -69,6 +69,7 @@ export class MapMain extends React.Component {
         />
         <ChickenWing cellDimensions={this.props.cellDimensions} chickenPosition={this.state.chickenWing}/>
         <OwenSnakeMain 
+          incrementPoints={this.props.incrementPoints}
           mapDimensions={this.props.mapDimensions} 
           cellDimensions={this.props.cellDimensions} 
           lastPressed={this.state.lastPressed}

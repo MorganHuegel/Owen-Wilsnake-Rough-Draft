@@ -46,7 +46,8 @@ export class GameplayMain extends React.Component {
     score: {
       points: 0,
       numTouches: 0
-    }
+    },
+    difficulty: 5 // can be 1-10
   }
 
 
@@ -72,6 +73,7 @@ export class GameplayMain extends React.Component {
 
   incrementNumTouches = () => {
     const updatedScore = Object.assign({}, this.state.score, {
+      points: this.state.score.points - 1,
       numTouches: this.state.score.numTouches + 1
     })
 
@@ -81,9 +83,9 @@ export class GameplayMain extends React.Component {
   }
 
 
-  incrementPoints = (amount) => {
+  incrementPoints = () => {
     const updatedScore = Object.assign({}, this.state.score, {
-      points: this.state.score.points + amount
+      points: this.state.score.points + (this.state.difficulty * 100)
     })
 
     this.setState({
