@@ -42,6 +42,10 @@ export class GameplayMain extends React.Component {
     cellDimensions: {
       width: null,
       height: null
+    },
+    score: {
+      points: 0,
+      numTouches: 0
     }
   }
 
@@ -62,6 +66,28 @@ export class GameplayMain extends React.Component {
           console.log(err)
         }
       })
+    })
+  }
+
+
+  incrementNumTouches = () => {
+    const updatedScore = Object.assign({}, this.state.score, {
+      numTouches: this.state.score.numTouches + 1
+    })
+
+    this.setState({
+      score: updatedScore
+    })
+  }
+
+
+  incrementPoints = (amount) => {
+    const updatedScore = Object.assign({}, this.state.score, {
+      points: this.state.score.points + amount
+    })
+
+    this.setState({
+      score: updatedScore
     })
   }
 
@@ -126,8 +152,10 @@ export class GameplayMain extends React.Component {
         mapDimensions={this.state.mapDimensions} 
         cellDimensions={this.state.cellDimensions}
         playOwenSound={this.playOwenSound}
+        incrementNumTouches={this.incrementNumTouches}
+        incrementPoints={this.incrementPoints}
       />
-      header = <Header backToLanding={this.props.backToLanding} mapDimensions={this.state.mapDimensions} />
+      header = <Header backToLanding={this.props.backToLanding} mapDimensions={this.state.mapDimensions} score={this.state.score}/>
     }
 
     return (

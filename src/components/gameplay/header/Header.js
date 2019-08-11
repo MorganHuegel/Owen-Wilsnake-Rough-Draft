@@ -1,24 +1,23 @@
 import React from 'react';
 
-import { Text, View, TouchableHighlight } from 'react-native';
+import { View } from 'react-native';
+import { BackToLandingButton } from './BackToLandingButton';
+import { PointsDisplay } from './PointsDisplay';
 
 export function Header (props) {
   const HeaderStyles = {
     view: {
       flex: props.mapDimensions.headerHeight,
-      backgroundColor: 'green'
-    },
-    text: {
-      fontSize: 35
+      backgroundColor: 'rgb(70, 80, 120)',
+      display: 'flex',
+      flexDirection: 'row'
     }
   }
 
   return (
     <View style={HeaderStyles.view}>
-      <Text style={HeaderStyles.text}>Header</Text>
-      <TouchableHighlight onPress={event => props.backToLanding()}>
-        <Text>Back to Landing</Text>
-      </TouchableHighlight>
+      <PointsDisplay score={props.score}/>
+      <BackToLandingButton backToLanding={props.backToLanding}/>
     </View>
   )
 }
