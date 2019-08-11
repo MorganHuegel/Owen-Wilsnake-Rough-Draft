@@ -14,7 +14,7 @@ export function StartButton (props) {
   }
   return (
     <View style={startButtonStyles.container}>
-      <Button onPress={props.setToPlaying} title="Start Playing" style={startButtonStyles.button}/>
+      <Button onPress={props.setToPlaying} title="Play" style={startButtonStyles.button}/>
     </View>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 // import { GameplayMain } from './gameplay/GameplayMain';
-import { GameplayMain } from './gameplay2/GameplayMain';
+import { GameplayMain } from './gameplay/GameplayMain';
 import { LandingMain } from './landing-page/LandingMain';
 
 

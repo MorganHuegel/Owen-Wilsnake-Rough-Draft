@@ -1,22 +1,23 @@
 import React from 'react';
 
 import { View, Image } from 'react-native';
-import { LogoMainOwenFace } from './LogoMainOwenFace';
+import { LogoMainOwenFaceContainer } from './LogoMainOwenFaceContainer';
 
 export function LogoMain(props){
   logoMainStyles = {
     container: {
       flex: 2,
-      backgroundColor: 'red',
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
       display: 'flex',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      borderRadius: 100
     },
     logoWords: {
       resizeMode: 'contain',
       width: undefined,
       height: undefined,
       flex: 2,
-      zIndex: 1,
+      zIndex: 10,
       opacity: 0.9
     }
   }
@@ -24,7 +25,7 @@ export function LogoMain(props){
   return (
     <View style={logoMainStyles.container} onLayout={(e) => console.log(e.nativeEvent.layout)}>
       <Image source={require('./logoWords.png')} style={logoMainStyles.logoWords}/>
-      <LogoMainOwenFace />
+      <LogoMainOwenFaceContainer />
     </View>
   )
 }
