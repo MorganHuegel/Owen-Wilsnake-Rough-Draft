@@ -25,7 +25,7 @@ export class OwenSnakeMain extends React.Component {
     }
     this.addListenersForChickenWing = addListenersForChickenWing.bind(this)
     this.removeListenersForChicken = removeListenersForChicken.bind(this)
-    this.millisecondsPerPixel = 4000 / this.props.mapDimensions.width
+    this.millisecondsPerPixel = (10 / props.difficulty) * 1000 / this.props.mapDimensions.width
   }
 
 
@@ -220,17 +220,22 @@ export class OwenSnakeMain extends React.Component {
   }
 
 
+  owenDies = () => {
+    console.log('DEAD!')
+  }
+
+
   componentDidMount(){
     this._goRight(0)
     this.addListenersForChickenWing()
     this.state.snakeBody[0].left.addListener( ({value}) => {
       if (value === 0 || value === this.props.mapDimensions.width - this.props.cellDimensions.width) {
-        console.log('DEAD! (SIDEWAYS)')
-      }
+        this.owenDies()
+      } //else if (this.state.snakeBody.contains(face => face.)) {}
     })
     this.state.snakeBody[0].top.addListener( ({value}) => {
       if (value === 0 || value === this.props.mapDimensions.height - this.props.cellDimensions.height) {
-        console.log('DEAD! (VERTICALLY)')
+        this.owenDies()
       }
     })
   }

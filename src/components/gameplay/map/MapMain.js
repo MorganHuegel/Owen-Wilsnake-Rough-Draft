@@ -75,7 +75,8 @@ export class MapMain extends React.Component {
           lastPressed={this.state.lastPressed}
           playOwenSound={this.props.playOwenSound}
           chickenWing={this.state.chickenWing}
-          setChickenWing={this.setChickenWing}/>
+          setChickenWing={this.setChickenWing}
+          difficulty={this.props.difficulty}/>
       </TouchableOpacity>
     )
   }

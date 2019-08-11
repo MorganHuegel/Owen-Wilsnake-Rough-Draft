@@ -47,7 +47,7 @@ export class GameplayMain extends React.Component {
       points: 0,
       numTouches: 0
     },
-    difficulty: 5 // can be 1-10
+    difficulty: 10 // can be 1-10
   }
 
 
@@ -156,6 +156,7 @@ export class GameplayMain extends React.Component {
         playOwenSound={this.playOwenSound}
         incrementNumTouches={this.incrementNumTouches}
         incrementPoints={this.incrementPoints}
+        difficulty={this.state.difficulty}
       />
       header = <Header backToLanding={this.props.backToLanding} mapDimensions={this.state.mapDimensions} score={this.state.score}/>
     }

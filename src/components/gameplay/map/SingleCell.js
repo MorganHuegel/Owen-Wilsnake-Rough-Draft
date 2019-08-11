@@ -11,7 +11,7 @@ export function SingleCell (props) {
         backgroundColor: 'rgb(255, 255, 235)',
         borderRadius: 50
         }}>
-        </View>
+      </View>
     </View>
   )
 }
