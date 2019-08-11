@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 // import { GameplayMain } from './gameplay/GameplayMain';
-import { GameplayMain } from './gameplay2/GameplayMain';
+import { GameplayMain } from './gameplay/GameplayMain';
 import { LandingMain } from './landing-page/LandingMain';
 
 
@@ -53,6 +53,6 @@ const stylesApp = StyleSheet.create({
     alignItems: 'stretch',
     paddingVertical: 40,
     paddingHorizontal: 10,
-    backgroundColor: 'yellow'
+    backgroundColor: 'rgb(99,116,122)'
   }
 })

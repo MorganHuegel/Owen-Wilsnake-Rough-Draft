@@ -1,74 +1,81 @@
 import React from 'react';
-import { TouchableOpacity, Image } from 'react-native';
 
-import { RowOfEmptyCells } from './RowOfEmtpyCells';
+import { TouchableOpacity } from 'react-native';
+import { CellsMain } from './CellsMain'
+import { OwenSnakeMain } from './owenSnake/OwenSnakeMain';
+import { ChickenWing } from './ChickenWing';
 
-export const MapMain = (props) => {
-  function onPressIn(event){
-    //20px difference plus one cell-width between pageX and location on map component
-    const xFromLeft = event.nativeEvent.pageX - 20 - props.cellDimensions.width;
-    //100px difference plus one cell-height between pageY and location on map component
-    const yFromTop = event.nativeEvent.pageY - 95 - props.cellDimensions.height;
-
-    let nextDirection;
-    const currentHead = props.snakeBalls[0]
-    if (props.currentDirection === 'up' || props.currentDirection === 'down') {
-      nextDirection = xFromLeft < currentHead.x ? 'left' : 'right'
-    } else {
-      nextDirection = yFromTop < currentHead.y ? 'up' : 'down'
+export class MapMain extends React.Component {
+  state = {
+    lastPressed: {
+      mapX: null,
+      mapY: null,
+      numOfTouches: 0 /* Will increment with each touch. 
+                       needed for child component OwenSnakeMain so that
+                       ComponentDidUpdate method knows if it's a new press or not */
+    },
+    chickenWing: {
+      left: null,
+      top: null
     }
-    props.setCurrentDirection(nextDirection)
+  }
+
+  componentWillMount(){
+    this.setChickenWing()
   }
 
 
-  let rows, cellWidth, cellHeight;
+  setChickenWing = () => {
+    const xCoord = Math.floor((Math.random()) * (this.props.mapDimensions.width - this.props.cellDimensions.width))
+    const yCoord = Math.floor((Math.random()) * (this.props.mapDimensions.height - this.props.cellDimensions.height))
 
-  if (props.mapDimensions) {
-    cellWidth = props.cellDimensions.width
-    cellHeight = props.cellDimensions.height
-    
-    rows = [...Array(Math.floor(props.mapDimensions.height / 30)).keys()].map(rowIndex => {
-      return <RowOfEmptyCells 
-        key={rowIndex} 
-        rowIndex={rowIndex}
-        cellWidth={cellWidth}
-        cellHeight={cellHeight}
-        ballToEat={props.ballToEat}
-        numOfColumns={Math.floor(props.mapDimensions.width / 30)}
-      />
+    this.setState({chickenWing: {
+      left: xCoord, top: yCoord
+    }})
+  }
+
+
+  onPressMap(event){
+    const mapX = event.nativeEvent.pageX - this.props.screenToMapXOffset
+    const mapY = event.nativeEvent.pageY - this.props.screenToMapYOffset
+
+    this.setState({
+      lastPressed: {
+        mapX, 
+        mapY, 
+        numOfTouches: this.state.lastPressed.numOfTouches + 1
+      }
     })
   }
 
 
-  let owenSnake = props.snakeBalls.map((owenBall, index) => {
-    let owenSizeStyle = (isNaN(cellWidth) || isNaN(cellHeight)) ?
-    {display: 'none'} :
-    {
-      display: 'flex',
-      width: cellWidth, 
-      height: cellHeight, 
-      top: owenBall.y + 5, 
-      right: props.mapDimensions.width - owenBall.x - cellWidth - 5};
-    return <Image key={index} source={require('../../../../OWEN-WILSON.png')} style={[owenSizeStyle, stylesMapMain.owenHead]}/>
-  })
+  mapMainStyles = {
+    touchableOpacity: {
+      flex: this.props.mapDimensions.height
+    }
+  }
 
-  return (
-    <TouchableOpacity style={[props.styleSheet, stylesMapMain.mapMain]} onPressIn={onPressIn} onLayout={props.setMapDimensions}>
-      {rows}
-      {owenSnake}
-    </TouchableOpacity>
-  )
-}
 
-const stylesMapMain = {
-  mapMain: {
-    flexDirection: 'column',
-    padding: 5,
-    alignItems: 'space-around',
-    alignContent: 'space-around',
-    justifyContent: 'space-evenly'
-  },
-  owenHead: {
-    position: 'absolute'
+  render(){
+    return (
+      <TouchableOpacity 
+        style={this.mapMainStyles.touchableOpacity} 
+        activeOpacity={0.8}
+        onPress={event => this.onPressMap(event)}
+        >
+        <CellsMain 
+          mapDimensions={this.props.mapDimensions} 
+          cellDimensions={this.props.cellDimensions}
+        />
+        <ChickenWing cellDimensions={this.props.cellDimensions} chickenPosition={this.state.chickenWing}/>
+        <OwenSnakeMain 
+          mapDimensions={this.props.mapDimensions} 
+          cellDimensions={this.props.cellDimensions} 
+          lastPressed={this.state.lastPressed}
+          playOwenSound={this.props.playOwenSound}
+          chickenWing={this.state.chickenWing}
+          setChickenWing={this.setChickenWing}/>
+      </TouchableOpacity>
+    )
   }
 }

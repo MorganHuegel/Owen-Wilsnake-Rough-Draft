@@ -1,12 +1,22 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
+import { View } from 'react-native';
+
+import { LogoMain } from './logo/LogoMain';
+import { StartButton } from './StartButton';
 
 export class LandingMain extends React.Component {
+  landingMainStyles = {
+    main: {
+      display: 'flex',
+      flex: 1
+    }
+  }
+
   render(){
     return (
-      <View>
-        <Text>Landing Main</Text>
-        <Button onPress={this.props.setToPlaying} title="Start Playing"/>
+      <View style={this.landingMainStyles.main}>
+        <LogoMain />
+        <StartButton setToPlaying={this.props.setToPlaying}/>
       </View>
     )
   }
