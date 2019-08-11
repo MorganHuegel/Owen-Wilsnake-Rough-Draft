@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, TouchableHighlight } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 
 export function BackToLandingButton (props) {
   const backToLandingButtonStyles = {
@@ -10,13 +10,17 @@ export function BackToLandingButton (props) {
       alignItems: 'center'
     },
     text: {
-      
+      borderWidth: 2,
+      borderRadius: 10,
+      borderColor: 'white',
+      padding: 10,
+      color: 'white'
     }
   }
 
   return (
-    <TouchableHighlight onPress={event => props.backToLanding()} style={backToLandingButtonStyles.touchable}>
+    <TouchableOpacity onPress={event => props.backToLanding()} style={backToLandingButtonStyles.touchable} activeOpacity={0.8}>
       <Text style={backToLandingButtonStyles.text}>Back to Landing</Text>
-    </TouchableHighlight>
+    </TouchableOpacity>
   )
 }
