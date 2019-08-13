@@ -47,7 +47,7 @@ export class GameplayMain extends React.Component {
       points: 0,
       numTouches: 0
     },
-    difficulty: 10 // can be 1-10
+    difficulty: 5 // can be 1-10
   }
 
 

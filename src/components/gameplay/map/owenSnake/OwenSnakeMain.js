@@ -222,6 +222,15 @@ export class OwenSnakeMain extends React.Component {
 
   owenDies = () => {
     console.log('DEAD!')
+    const frozenSnakeBody = this.state.snakeBody.map(face => {
+      return {
+        left: face.left.__getValue(),
+        top: face.top.__getValue(),
+        listeners: {}
+      }
+    })
+    clearInterval(this.checkForDieInterval)
+    this.setState({snakeBody: frozenSnakeBody})
   }
 
 
@@ -231,13 +240,31 @@ export class OwenSnakeMain extends React.Component {
     this.state.snakeBody[0].left.addListener( ({value}) => {
       if (value === 0 || value === this.props.mapDimensions.width - this.props.cellDimensions.width) {
         this.owenDies()
-      } //else if (this.state.snakeBody.contains(face => face.)) {}
+      }
     })
     this.state.snakeBody[0].top.addListener( ({value}) => {
       if (value === 0 || value === this.props.mapDimensions.height - this.props.cellDimensions.height) {
         this.owenDies()
       }
     })
+    /////////////////////////////////////////////////
+    this.checkForDieInterval = setInterval(() => {
+      if (this.state.snakeBody.find( (face, i) => {
+        j = i
+        dir = face.moving
+        return (i > 3) &&
+          ( Math.abs(this.state.snakeBody[0].left.__getValue() - face.left.__getValue()) < this.props.cellDimensions.width ) &&
+          ( Math.abs(this.state.snakeBody[0].top.__getValue() - face.top.__getValue()) < this.props.cellDimensions.height ) &&
+          ( 
+            (this.state.snakeBody[0].moving === 'left'  || this.state.snakeBody[0].moving === 'right') ? 
+            (face.moving === 'up' || face.moving === 'down') : 
+            (face.moving === 'left' || face.moving === 'right')
+          )
+      })) {
+        this.owenDies()
+      }
+    }, 100)
+    /////////////////////////////////////////////////
   }
 
 

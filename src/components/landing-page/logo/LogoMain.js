@@ -25,7 +25,7 @@ export function LogoMain(props){
   }
 
   return (
-    <View style={logoMainStyles.container} onLayout={(e) => console.log(e.nativeEvent.layout)}>
+    <View style={logoMainStyles.container}>
       <Image source={require('./logoWords.png')} style={logoMainStyles.logoWords}/>
       <LogoMainOwenFaceContainer />
     </View>
