@@ -19,6 +19,14 @@ export function GameOverMessage(props){
       color: 'white',
       fontSize: 40
     },
+    finalScore: {
+      fontSize: 20,
+      color: 'white'
+    },
+    numTouches: {
+      fontSize: 20,
+      color: 'white'
+    },
     button1: {
       backgroundColor: 'yellow',
       justifyContent: 'center',
@@ -54,6 +62,8 @@ export function GameOverMessage(props){
       
       <View style={gameOverMessageStyles.textContainer}>
         <Text style={gameOverMessageStyles.text}>Game over, loser!</Text>
+        <Text style={gameOverMessageStyles.finalScore}>Final Score: {props.score.points}</Text>
+        <Text style={gameOverMessageStyles.numTouches}>Number of touches: {props.score.numTouches}</Text>
       </View>
 
       <TouchableOpacity onPress={() => props.restartGame()} style={gameOverMessageStyles.button1}>

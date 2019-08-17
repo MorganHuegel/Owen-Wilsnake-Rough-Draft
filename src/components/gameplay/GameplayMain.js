@@ -185,7 +185,12 @@ export class GameplayMain extends React.Component {
       />
       header = <Header backToLanding={this.props.backToLanding} mapDimensions={this.state.mapDimensions} score={this.state.score}/>
       gameOverScreen = this.state.owenIsDead ? 
-        <GameOverMain mapDimensions={this.state.mapDimensions} backToLanding={this.props.backToLanding} restartGame={this.restartGame}/> : 
+        <GameOverMain 
+          mapDimensions={this.state.mapDimensions} 
+          backToLanding={this.props.backToLanding} 
+          restartGame={this.restartGame} 
+          score={this.state.score}
+        /> : 
         null
     }
 
