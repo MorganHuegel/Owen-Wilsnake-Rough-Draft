@@ -32,8 +32,27 @@ export class OwenSnakeMain extends React.Component {
 
 
   async componentDidUpdate(prevProps, prevState){
-    if (prevProps.lastPressed.numOfTouches === this.props.lastPressed.numOfTouches){
-      return;
+    // When user clicks 'Play Again' button after dying
+    if (prevProps.owenIsDead && !this.props.owenIsDead) {
+      return this.setState({
+        snakeBody: [
+          {
+            left: new Animated.Value(1),
+            top: new Animated.Value(1),
+            moving: 'right'
+          }
+        ]
+      }, () => {
+        this._goRight(0)
+        this.checkForDieInterval = setInterval(() => {
+          this.checkForChicken()
+          this.checkForDeath()
+        }, 100)
+      })
+    }
+    
+    if (prevProps.numOfTouches === this.props.numOfTouches){
+      return; // Prevents infinite re-rendering loop
     }
 
     const leadOwenCenterX = this.state.snakeBody[0].left.__getValue() + (1 / 2 * this.props.cellDimensions.width)

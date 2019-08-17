@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { View, Text, Animated } from 'react-native';
+import { GameOverMessage } from './GameOverMessage';
 
 export class GameOverMain extends React.Component {
   constructor(props){
@@ -33,7 +34,7 @@ export class GameOverMain extends React.Component {
 
     return (
       <Animated.View style={gameOverMainStyles.view}>
-        <Text>GameOverScreen</Text>
+        <GameOverMessage backToLanding={this.props.backToLanding} restartGame={this.props.restartGame}/>
       </Animated.View>
     )
   }

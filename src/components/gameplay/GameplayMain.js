@@ -49,7 +49,7 @@ export class GameplayMain extends React.Component {
       numTouches: 0
     },
     difficulty: 5, // can be 1-10
-    owenIsDead: true
+    owenIsDead: false
   }
 
 
@@ -117,6 +117,20 @@ export class GameplayMain extends React.Component {
   }
 
 
+  restartGame = () => {
+    const freshState = {
+      owenSoundIndex: 0,
+      score: {
+        points: 0,
+        numTouches: 0
+      },
+      owenIsDead: false
+    }
+
+    this.setState(freshState)
+  }
+
+
   setMapDimensions(event){
     const gameplayHeight = event.nativeEvent.layout.height - (2 * this.gameplayMainStyles.view.borderWidth)  //<-- 4px border
     const gameplayWidth = event.nativeEvent.layout.width - (2 * this.gameplayMainStyles.view.borderWidth)
@@ -153,6 +167,7 @@ export class GameplayMain extends React.Component {
 
 
   render(){
+    console.log('STATE IN GAMEPLA MAIN: ', this.state)
     let mapMain, header, gameOverScreen
     if (this.state.mapDimensions.height) {
       mapMain = <MapMain 
@@ -163,15 +178,16 @@ export class GameplayMain extends React.Component {
         playOwenSound={this.playOwenSound}
         incrementNumTouches={this.incrementNumTouches}
         incrementPoints={this.incrementPoints}
+        score={this.state.score}
         difficulty={this.state.difficulty}
         owenIsDead={this.state.owenIsDead}
         setOwenToDead={this.setOwenToDead}
       />
       header = <Header backToLanding={this.props.backToLanding} mapDimensions={this.state.mapDimensions} score={this.state.score}/>
-      gameOverScreen = this.state.owenIsDead ? <GameOverMain mapDimensions={this.state.mapDimensions}/> : null
+      gameOverScreen = this.state.owenIsDead ? 
+        <GameOverMain mapDimensions={this.state.mapDimensions} backToLanding={this.props.backToLanding} restartGame={this.restartGame}/> : 
+        null
     }
-
-    //const gameOverScreen = this.state.owenIsDead ? <GameOverMain mapDimensions={this.state.mapDimensions}/> : null
 
     return (
       <Animated.View style={this.gameplayMainStyles.view} onLayout={event => this.setMapDimensions(event)}>

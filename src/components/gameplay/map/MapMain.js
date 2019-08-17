@@ -9,10 +9,7 @@ export class MapMain extends React.Component {
   state = {
     lastPressed: {
       mapX: null,
-      mapY: null,
-      numOfTouches: 0 /* Will increment with each touch. 
-                       needed for child component OwenSnakeMain so that
-                       ComponentDidUpdate method knows if it's a new press or not */
+      mapY: null
     },
     chickenWing: {
       left: null,
@@ -22,6 +19,12 @@ export class MapMain extends React.Component {
 
   componentWillMount(){
     this.setChickenWing()
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    if (prevProps.owenIsDead && !this.props.owenIsDead) {
+      this.setChickenWing()
+    }
   }
 
 
@@ -42,8 +45,7 @@ export class MapMain extends React.Component {
     this.setState({
       lastPressed: {
         mapX, 
-        mapY, 
-        numOfTouches: this.state.lastPressed.numOfTouches + 1
+        mapY
       }
     }, () => this.props.incrementNumTouches())
   }
@@ -77,6 +79,7 @@ export class MapMain extends React.Component {
           mapDimensions={this.props.mapDimensions} 
           cellDimensions={this.props.cellDimensions} 
           lastPressed={this.state.lastPressed}
+          numOfTouches={this.props.score.numTouches}
           playOwenSound={this.props.playOwenSound}
           chickenWing={this.state.chickenWing}
           setChickenWing={this.setChickenWing}
