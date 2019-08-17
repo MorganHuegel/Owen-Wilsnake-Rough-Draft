@@ -153,7 +153,7 @@ export class GameplayMain extends React.Component {
 
 
   render(){
-    let mapMain, header
+    let mapMain, header, gameOverScreen
     if (this.state.mapDimensions.height) {
       mapMain = <MapMain 
         screenToMapXOffset={this.gameplayMainStyles.view.borderWidth + this.props.screenPaddingX}
@@ -168,9 +168,10 @@ export class GameplayMain extends React.Component {
         setOwenToDead={this.setOwenToDead}
       />
       header = <Header backToLanding={this.props.backToLanding} mapDimensions={this.state.mapDimensions} score={this.state.score}/>
+      gameOverScreen = this.state.owenIsDead ? <GameOverMain mapDimensions={this.state.mapDimensions}/> : null
     }
 
-    const gameOverScreen = this.state.owenIsDead ? <GameOverMain /> : null
+    //const gameOverScreen = this.state.owenIsDead ? <GameOverMain mapDimensions={this.state.mapDimensions}/> : null
 
     return (
       <Animated.View style={this.gameplayMainStyles.view} onLayout={event => this.setMapDimensions(event)}>
