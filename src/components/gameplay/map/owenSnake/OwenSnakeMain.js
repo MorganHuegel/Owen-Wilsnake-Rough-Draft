@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View, Animated, Easing } from 'react-native';
+import { Image, View, Animated, Easing } from 'react-native';
 import { SingleOwenFace } from './SingleOwenFace';
 
 import { checkForDeath, checkForChicken } from './OwenSnakeMainUtils';
@@ -300,6 +300,17 @@ export class OwenSnakeMain extends React.Component {
       return <SingleOwenFace face={face} cellDimensions={this.props.cellDimensions} key={'face' + index}/>
     })
 
+    const collisionLogo = this.props.owenIsDead ? 
+      <Image source={require('../../../../../collision.png')} 
+      style={{
+        width: 60, 
+        height: 42, 
+        position: 'absolute', 
+        left: this.state.snakeBody[0].left - 10, 
+        top: this.state.snakeBody[0].top - 10,
+        zIndex: 10
+      }}/> : null
+
     let OwenSnakeMainStyle = {
       position: 'absolute',
       top: 0,
@@ -308,6 +319,7 @@ export class OwenSnakeMain extends React.Component {
 
     return (
       <View style={OwenSnakeMainStyle}>
+        {collisionLogo}
         {snake}
       </View>
     )
