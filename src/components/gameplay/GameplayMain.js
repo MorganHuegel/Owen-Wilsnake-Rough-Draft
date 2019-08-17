@@ -3,6 +3,7 @@ import { Animated, Easing } from 'react-native';
 
 import { Header } from './header/Header';
 import { MapMain } from './map/MapMain';
+import { GameOverMain } from './GameOverMain';
 
 
 /// LOAD THE SOUND BYTES //////////////////////////////////////
@@ -47,7 +48,8 @@ export class GameplayMain extends React.Component {
       points: 0,
       numTouches: 0
     },
-    difficulty: 5 // can be 1-10
+    difficulty: 5, // can be 1-10
+    owenIsDead: true
   }
 
 
@@ -144,6 +146,11 @@ export class GameplayMain extends React.Component {
   }
 
 
+  setOwenToDead = () => {
+    this.setState({owenIsDead: true})
+  }
+
+
 
   render(){
     let mapMain, header
@@ -157,14 +164,19 @@ export class GameplayMain extends React.Component {
         incrementNumTouches={this.incrementNumTouches}
         incrementPoints={this.incrementPoints}
         difficulty={this.state.difficulty}
+        owenIsDead={this.state.owenIsDead}
+        setOwenToDead={this.setOwenToDead}
       />
       header = <Header backToLanding={this.props.backToLanding} mapDimensions={this.state.mapDimensions} score={this.state.score}/>
     }
+
+    const gameOverScreen = this.state.owenIsDead ? <GameOverMain /> : null
 
     return (
       <Animated.View style={this.gameplayMainStyles.view} onLayout={event => this.setMapDimensions(event)}>
         {header}
         {mapMain}
+        {gameOverScreen}
       </Animated.View>
     )
   }

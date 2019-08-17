@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Animated, Easing } from 'react-native';
 import { SingleOwenFace } from './SingleOwenFace';
 
-import { addListenersForChickenWing, removeListenersForChicken } from './OwenSnakeMainUtils';
+import { checkForDeath, checkForChicken } from './OwenSnakeMainUtils';
 
 export class OwenSnakeMain extends React.Component {
   constructor (props) {
@@ -13,18 +13,12 @@ export class OwenSnakeMain extends React.Component {
         {
           left: new Animated.Value(1),
           top: new Animated.Value(1),
-          moving: 'right',
-          listeners: {
-            chickenWingLeftId: null,
-            chickenWingLeftAligned: false,
-            chickenWingTop: null,
-            chickenWingTopAligned: false
-          }
+          moving: 'right'
         }
       ]
     }
-    this.addListenersForChickenWing = addListenersForChickenWing.bind(this)
-    this.removeListenersForChicken = removeListenersForChicken.bind(this)
+    this.checkForDeath = checkForDeath.bind(this)
+    this.checkForChicken = checkForChicken.bind(this)
     this.millisecondsPerPixel = (10 / props.difficulty) * 1000 / this.props.mapDimensions.width
   }
 
@@ -32,19 +26,12 @@ export class OwenSnakeMain extends React.Component {
   owenEatsChicken(){
     this.addOwenFace()
     this.props.incrementPoints()
-    this.removeListenersForChicken()
     this.props.playOwenSound()
     this.props.setChickenWing()
-    this.addListenersForChickenWing()
   }
 
 
   async componentDidUpdate(prevProps, prevState){
-    if (prevProps.chickenWing.left !== this.props.chickenWing.left) {
-      this.removeListenersForChicken()
-      this.addListenersForChickenWing()
-    }
-
     if (prevProps.lastPressed.numOfTouches === this.props.lastPressed.numOfTouches){
       return;
     }
@@ -104,7 +91,10 @@ export class OwenSnakeMain extends React.Component {
 
   validateSnakeBodyIndex(index){
     if (index >= this.state.snakeBody.length) {
-      throw new Error('Break out of this loop')
+      throw new Error('Break out of this loop; at the end of the snake')
+    }
+    if (!this.state.snakeBody[index].left instanceof Animated.Value) {
+      throw new Error('break out of this loop; owen has died')
     }
   }
 
@@ -221,50 +211,23 @@ export class OwenSnakeMain extends React.Component {
 
 
   owenDies = () => {
-    console.log('DEAD!')
+    clearInterval(this.checkForDieInterval)
     const frozenSnakeBody = this.state.snakeBody.map(face => {
       return {
         left: face.left.__getValue(),
-        top: face.top.__getValue(),
-        listeners: {}
+        top: face.top.__getValue()
       }
     })
-    clearInterval(this.checkForDieInterval)
-    this.setState({snakeBody: frozenSnakeBody})
+    this.setState({snakeBody: frozenSnakeBody}, () => this.props.setOwenToDead())
   }
 
 
   componentDidMount(){
     this._goRight(0)
-    this.addListenersForChickenWing()
-    this.state.snakeBody[0].left.addListener( ({value}) => {
-      if (value === 0 || value === this.props.mapDimensions.width - this.props.cellDimensions.width) {
-        this.owenDies()
-      }
-    })
-    this.state.snakeBody[0].top.addListener( ({value}) => {
-      if (value === 0 || value === this.props.mapDimensions.height - this.props.cellDimensions.height) {
-        this.owenDies()
-      }
-    })
-    /////////////////////////////////////////////////
     this.checkForDieInterval = setInterval(() => {
-      if (this.state.snakeBody.find( (face, i) => {
-        j = i
-        dir = face.moving
-        return (i > 3) &&
-          ( Math.abs(this.state.snakeBody[0].left.__getValue() - face.left.__getValue()) < this.props.cellDimensions.width ) &&
-          ( Math.abs(this.state.snakeBody[0].top.__getValue() - face.top.__getValue()) < this.props.cellDimensions.height ) &&
-          ( 
-            (this.state.snakeBody[0].moving === 'left'  || this.state.snakeBody[0].moving === 'right') ? 
-            (face.moving === 'up' || face.moving === 'down') : 
-            (face.moving === 'left' || face.moving === 'right')
-          )
-      })) {
-        this.owenDies()
-      }
+      this.checkForChicken()
+      this.checkForDeath()
     }, 100)
-    /////////////////////////////////////////////////
   }
 
 

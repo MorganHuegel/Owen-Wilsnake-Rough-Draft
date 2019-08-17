@@ -1,71 +1,35 @@
-export function addListenersForChickenWing () {
-  const listenerLeft = this.state.snakeBody[0].left.addListener( ({value}) => {
-    const alignedHorizontally = Math.abs(value - this.props.chickenWing.left) < (this.props.cellDimensions.width)
-    const alignedVertically = this.state.snakeBody[0].listeners.chickenWingTopAligned
 
-    // If it is aligned both vertically and horizontally
-    if (alignedHorizontally && alignedVertically) {
-      this.owenEatsChicken()
-    } // If it is aligned only horizontally only, and state has not been updated to show it yet
-    else if (alignedHorizontally && !this.state.snakeBody[0].listeners.chickenWingLeftAligned) {
-      const updatedListeners = Object.assign({}, this.state.snakeBody[0].listeners, {chickenWingLeftAligned: true})
-      const updatedSnakeBody = [...this.state.snakeBody]
-      updatedSnakeBody[0].listeners = updatedListeners
-      this.setState({snakeBody: updatedSnakeBody})
-    } // If it is not aligned horizontally, but state says that it is, we need to change the state back
-    else if (!alignedHorizontally && this.state.snakeBody[0].listeners.chickenWingLeftAligned) {
-      const updatedListeners = Object.assign({}, this.state.snakeBody[0].listeners, {chickenWingLeftAligned: false})
-      const updatedSnakeBody = [...this.state.snakeBody]
-      updatedSnakeBody[0].listeners = updatedListeners
-      this.setState({snakeBody: updatedSnakeBody})
-    } 
-    // No Else case, because if it is not aligned and state does not say it is aligned, no change needs to be made
-  })
+export function checkForDeath(){
+  // if lead Owen hits the wall, DEAD!!
+  if (
+    this.state.snakeBody[0].left.__getValue() === 0 || 
+    this.state.snakeBody[0].top.__getValue() === 0 ||
+    this.state.snakeBody[0].left.__getValue() === this.props.mapDimensions.width - this.props.cellDimensions.width ||
+    this.state.snakeBody[0].top.__getValue() === this.props.mapDimensions.height - this.props.cellDimensions.height
+    ) {
+    this.owenDies()
+  }
 
-
-  const listenerTop = this.state.snakeBody[0].top.addListener( ({value}) => {
-    const alignedHorizontally = this.state.snakeBody[0].listeners.chickenWingLeftAligned
-    const alignedVertically = Math.abs(value - this.props.chickenWing.top) < (this.props.cellDimensions.height)
-
-    // If it is aligned both vertically and horizontally
-    if (alignedHorizontally && alignedVertically) {
-      this.owenEatsChicken()
-    } // If it is aligned only vertically only, and state has not been updated to show it yet
-    else if (alignedVertically && !this.state.snakeBody[0].listeners.chickenWingTopAligned) {
-      const updatedListeners = Object.assign({}, this.state.snakeBody[0].listeners, {chickenWingTopAligned: true})
-      const updatedSnakeBody = [...this.state.snakeBody]
-      updatedSnakeBody[0].listeners = updatedListeners
-      this.setState({snakeBody: updatedSnakeBody})
-    } // If it is not aligned vertically, but state says that it is, we need to change the state back
-    else if (!alignedVertically && this.state.snakeBody[0].listeners.chickenWingTopAligned) {
-      const updatedListeners = Object.assign({}, this.state.snakeBody[0].listeners, {chickenWingTopAligned: false})
-      const updatedSnakeBody = [...this.state.snakeBody]
-      updatedSnakeBody[0].listeners = updatedListeners
-      this.setState({snakeBody: updatedSnakeBody})
-    } 
-    // No Else case, because if it is not aligned and state does not say it is aligned, no change needs to be made
-  })
-
-  const updatedListeners = Object.assign({}, this.state.snakeBody[0].listeners, {
-    chickenWingLeftId: listenerLeft,
-    chickenWingTopId: listenerTop
-  })
-  const updatedSnakeBody = [...this.state.snakeBody]
-  updatedSnakeBody[0].listeners = updatedListeners
-  this.setState({snakeBody: updatedSnakeBody})
+  // if lead Owen hits another owen, while traveling perpindicularly to that Owen, DEAD!!
+  else if (this.state.snakeBody.find( (face, i) => {
+    return (i > 3) &&
+      ( Math.abs(this.state.snakeBody[0].left.__getValue() - face.left.__getValue()) < this.props.cellDimensions.width ) &&
+      ( Math.abs(this.state.snakeBody[0].top.__getValue() - face.top.__getValue()) < this.props.cellDimensions.height ) &&
+      ( 
+        (this.state.snakeBody[0].moving === 'left'  || this.state.snakeBody[0].moving === 'right') ? 
+        (face.moving === 'up' || face.moving === 'down') : 
+        (face.moving === 'left' || face.moving === 'right')
+      )
+  })) {
+    this.owenDies()
+  }
 }
 
-
-export function removeListenersForChicken () {
-  this.state.snakeBody[0].left.removeListener(this.state.snakeBody[0].listeners.chickenWingLeftId)
-  this.state.snakeBody[0].top.removeListener(this.state.snakeBody[0].listeners.chickenWingTopId)
-  const updatedListeners = Object.assign({}, this.state.snakeBody[0].listerners, {
-    chickenWingLeftId: null,
-    chickenWingLeftAligned: false,
-    chickenWingTopId: null,
-    chickenWingTopAligned: false
-  })
-  const updatedSnakeBody = [...this.state.snakeBody]
-  updatedSnakeBody[0].listeners = updatedListeners
-  this.setState({snakeBody: updatedSnakeBody})
+export function checkForChicken(){
+  if (
+    (Math.abs(this.state.snakeBody[0].left.__getValue() - this.props.chickenWing.left) < this.props.cellDimensions.width)
+    && (Math.abs(this.state.snakeBody[0].top.__getValue() - this.props.chickenWing.top) < this.props.cellDimensions.height)
+  ) {
+    this.owenEatsChicken()
+  }
 }

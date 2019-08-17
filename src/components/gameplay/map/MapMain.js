@@ -57,11 +57,14 @@ export class MapMain extends React.Component {
 
 
   render(){
+    const disabledScreenTouch = this.props.owenIsDead
+
     return (
       <TouchableOpacity 
         style={this.mapMainStyles.touchableOpacity} 
         activeOpacity={0.8}
         onPress={event => this.onPressMap(event)}
+        disabled={disabledScreenTouch}
         >
         <CellsMain 
           mapDimensions={this.props.mapDimensions} 
@@ -69,6 +72,7 @@ export class MapMain extends React.Component {
         />
         <ChickenWing cellDimensions={this.props.cellDimensions} chickenPosition={this.state.chickenWing}/>
         <OwenSnakeMain 
+          setOwenToDead={this.props.setOwenToDead}
           incrementPoints={this.props.incrementPoints}
           mapDimensions={this.props.mapDimensions} 
           cellDimensions={this.props.cellDimensions} 
@@ -76,7 +80,8 @@ export class MapMain extends React.Component {
           playOwenSound={this.props.playOwenSound}
           chickenWing={this.state.chickenWing}
           setChickenWing={this.setChickenWing}
-          difficulty={this.props.difficulty}/>
+          difficulty={this.props.difficulty}
+          owenIsDead={this.props.owenIsDead}/>
       </TouchableOpacity>
     )
   }
