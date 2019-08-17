@@ -49,7 +49,8 @@ export class GameplayMain extends React.Component {
       numTouches: 0
     },
     difficulty: 5, // can be 1-10
-    owenIsDead: false
+    owenIsDead: false,
+    slidingOutGameOver: false
   }
 
 
@@ -118,16 +119,21 @@ export class GameplayMain extends React.Component {
 
 
   restartGame = () => {
-    const freshState = {
-      owenSoundIndex: 0,
-      score: {
-        points: 0,
-        numTouches: 0
-      },
-      owenIsDead: false
-    }
-
-    this.setState(freshState)
+    this.setState({slidingOutGameOver: true}, () => {
+      setTimeout(() => {
+        const freshState = {
+          owenSoundIndex: 0,
+          score: {
+            points: 0,
+            numTouches: 0
+          },
+          owenIsDead: false,
+          slidingOutGameOver: false
+        }
+    
+        this.setState(freshState)
+      }, 1000)
+    })
   }
 
 
@@ -167,7 +173,6 @@ export class GameplayMain extends React.Component {
 
 
   render(){
-    console.log('STATE IN GAMEPLA MAIN: ', this.state)
     let mapMain, header, gameOverScreen
     if (this.state.mapDimensions.height) {
       mapMain = <MapMain 
@@ -190,6 +195,7 @@ export class GameplayMain extends React.Component {
           backToLanding={this.props.backToLanding} 
           restartGame={this.restartGame} 
           score={this.state.score}
+          slidingOutGameOver={this.state.slidingOutGameOver}
         /> : 
         null
     }

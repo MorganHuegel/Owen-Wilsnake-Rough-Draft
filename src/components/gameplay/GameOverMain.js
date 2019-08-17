@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View, Text, Animated } from 'react-native';
+import { Animated } from 'react-native';
 import { GameOverMessage } from './GameOverMessage';
 
 export class GameOverMain extends React.Component {
@@ -17,6 +17,15 @@ export class GameOverMain extends React.Component {
       toValue: -45,
       duration: 1000
     }).start()
+  }
+
+  componentDidUpdate(prevProps){
+    if (!prevProps.slidingOutGameOver && this.props.slidingOutGameOver) {
+      Animated.timing(this.state.top, {
+        toValue: (-1 * this.screenHeight),
+        duration: 1000
+      }).start()
+    }
   }
 
   render(){
