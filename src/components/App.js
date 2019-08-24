@@ -1,13 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-// import { GameplayMain } from './gameplay/GameplayMain';
+import { LoginMain } from './login/loginMain';
 import { GameplayMain } from './gameplay/GameplayMain';
 import { LandingMain } from './landing-page/LandingMain';
 
 
 export default class App extends React.Component {
   state = {
+    loggedIn: false,
     playing: false,
     fadingOutGameplay: false
   }
@@ -27,15 +28,20 @@ export default class App extends React.Component {
   }
 
   render() {
-    let component = this.state.playing ? 
-      <GameplayMain 
+    let component;
+    if (!this.state.loggedIn) {
+      component = <LoginMain />
+    } else if (this.state.playing) {
+      component = <GameplayMain 
         backToLanding={this.backToLanding} 
         fadeOutGameplayTime={this.fadeOutGameplayTime} 
         fadingOutGameplay={this.state.fadingOutGameplay}
         screenPaddingX={stylesApp.container.paddingHorizontal}
         screenPaddingY={stylesApp.container.paddingVertical}
-      /> :
-      <LandingMain setToPlaying={this.setToPlaying}/>
+      /> 
+    } else {
+      component = <LandingMain setToPlaying={this.setToPlaying}/>
+    } 
 
     return (
       <View style={stylesApp.container}>
