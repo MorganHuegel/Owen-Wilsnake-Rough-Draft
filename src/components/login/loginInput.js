@@ -22,7 +22,8 @@ export function LoginInput (props) {
       color: 'rgb(255, 170, 160)',
       fontStyle: 'italic',
       minHeight: 40,
-      maxWidth: 250
+      maxWidth: 250,
+      marginTop: 10
     },
     icon: {
       height: 20,

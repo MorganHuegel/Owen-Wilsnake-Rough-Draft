@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { LoginInput } from './loginInput';
 
 export class LoginMain extends React.Component {
@@ -29,19 +29,23 @@ export class LoginMain extends React.Component {
     },
     button: {
       width: 250,
+      height: 40,
       justifyContent: 'center',
       alignItems: 'center',
       borderWidth: 2,
       borderRadius: 5,
-      borderColor: 'rgb(230, 230, 230)'
+      borderColor: 'rgb(230, 230, 230)',
+      marginTop: 20
     },
-    buttonText: {},
+    buttonText: {
+      color: 'white'
+    },
     errorMessage: {
       color: 'rgb(255, 170, 160)',
       fontStyle: 'italic',
-      marginBottom: 50,
       minHeight: 40,
-      maxWidth: 250
+      maxWidth: 250,
+      marginTop: 10
     }
   }
 
@@ -112,11 +116,13 @@ export class LoginMain extends React.Component {
             inputValue={this.state.passwordText}
           />
 
-          <TouchableOpacity style={this.loginMainStyles.button}>
+          <TouchableOpacity style={this.loginMainStyles.button} disabled={this.state.isFetching}>
             <Text style={this.loginMainStyles.buttonText}>Start Playing</Text>
           </TouchableOpacity>
 
           <Text style={this.loginMainStyles.errorMessage}>{this.state.fetchErrorMessage}</Text>
+
+          <ActivityIndicator size='small' color='rgb(255, 255, 255)' animating={this.state.isFetching}/>
         </View>
 
 
