@@ -10,7 +10,7 @@ export class LoginMain extends React.Component {
       usernameText: '',
       usernameErrorMessage: '',
       verifiedUsernameAvailable: false,
-      passwordText: 'password',
+      passwordText: '',
       passwordErrorMessage: '',
       isFetching: false,
       fetchErrorMessage: ''
@@ -83,11 +83,7 @@ export class LoginMain extends React.Component {
 
 
 
-
-
   render(){
-    let editable = !this.state.isFetching
-
     return (
       <View style={this.loginMainStyles.container}>
         <View style={{flex: 1, justifyContent: 'center'}}>
@@ -104,6 +100,7 @@ export class LoginMain extends React.Component {
             errorMessage={this.state.usernameErrorMessage}
             isFetching={this.state.isFetching}
             onBlur={this.onBlurUsername}
+            inputValue={this.state.usernameText}
           />
 
           <LoginInput 
@@ -112,6 +109,7 @@ export class LoginMain extends React.Component {
             errorMessage={this.state.passwordErrorMessage}
             isFetching={this.state.isFetching}
             onBlur={this.onBlurPassword}
+            inputValue={this.state.passwordText}
           />
 
           <TouchableOpacity style={this.loginMainStyles.button}>
