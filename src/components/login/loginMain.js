@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
 import { LoginInput } from './loginInput';
+
+import { fetchLogin } from '../../fetchFunctions/login';
 
 export class LoginMain extends React.Component {
   constructor(props){
@@ -24,8 +27,8 @@ export class LoginMain extends React.Component {
       alignItems: 'center'
     },
     logo: {
-      width: 120,
-      height: 140
+      width: 180,
+      height: 210
     },
     button: {
       width: 250,
@@ -78,10 +81,32 @@ export class LoginMain extends React.Component {
 
 
   onBlurUsername = (event) => {
-    //CHECK AVAILABILITY HERE
+    this.onChangeUsernameText(event.nativeEvent.text)
+  }
+  
+  onBlurPassword = (event) => {
+    this.onChangePasswordText(event.nativeEvent.text)
   }
 
-  onBlurPassword = (event) => {
+  onSubmit = (event) => {
+    if (this.state.usernameErrorMessage || this.state.passwordErrorMessage) {
+      return
+    }
+    this.setState({
+      isFetching: true,
+      fetchErrorMessage: ''
+    }, () => {
+      return fetchLogin(this.state.usernameText, this.state.passwordText)
+        .then(webToken => {
+          return this.props.setLoggedIn(true, webToken)
+        })
+        .catch(errorMessage => {
+          this.setState({
+            fetchErrorMessage: errorMessage,
+            isFetching: false
+          })
+        })
+    })
 
   }
 
@@ -116,7 +141,11 @@ export class LoginMain extends React.Component {
             inputValue={this.state.passwordText}
           />
 
-          <TouchableOpacity style={this.loginMainStyles.button} disabled={this.state.isFetching}>
+          <TouchableOpacity 
+            style={this.loginMainStyles.button} 
+            disabled={this.state.isFetching || !!this.state.usernameErrorMessage || !!this.state.passwordErrorMessage} 
+            onPress={this.onSubmit}
+          >
             <Text style={this.loginMainStyles.buttonText}>Start Playing</Text>
           </TouchableOpacity>
 

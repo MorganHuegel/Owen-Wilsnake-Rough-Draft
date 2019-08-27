@@ -8,6 +8,7 @@
     "demo": "react-native run-ios"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.6.1",
     "react": "16.8.3",
     "react-native": "0.59.9",
     "react-native-sound": "^0.10.12"

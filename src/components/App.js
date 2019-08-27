@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { LoginMain } from './login/loginMain';
 import { GameplayMain } from './gameplay/GameplayMain';
@@ -23,6 +24,20 @@ export default class App extends React.Component {
     })
   }
 
+  setLoggedIn = (bool, webToken=null) => {
+    if (bool) {
+      return AsyncStorage.setItem('@webToken', webToken)
+        .then(this.setState({
+          loggedIn: bool
+        }))
+    } else {
+      return AsyncStorage.removeItem('@webToken')
+        .then(this.setState({
+          loggedIn: bool
+        }))
+    }
+  }
+
   setToPlaying = () => {
     this.setState({playing: true})
   }
@@ -30,7 +45,7 @@ export default class App extends React.Component {
   render() {
     let component;
     if (!this.state.loggedIn) {
-      component = <LoginMain />
+      component = <LoginMain setLoggedIn={this.setLoggedIn}/>
     } else if (this.state.playing) {
       component = <GameplayMain 
         backToLanding={this.backToLanding} 
@@ -40,7 +55,7 @@ export default class App extends React.Component {
         screenPaddingY={stylesApp.container.paddingVertical}
       /> 
     } else {
-      component = <LandingMain setToPlaying={this.setToPlaying}/>
+      component = <LandingMain setToPlaying={this.setToPlaying} setLoggedIn={this.setLoggedIn}/>
     } 
 
     return (
