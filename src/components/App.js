@@ -1,18 +1,21 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { LoginMain } from './login/loginMain';
 import { GameplayMain } from './gameplay/GameplayMain';
 import { LandingMain } from './landing-page/LandingMain';
+import { fetchLoginJwt } from '../fetchFunctions/loginJwt';
 
 
 export default class App extends React.Component {
   state = {
     loggedIn: false,
     playing: false,
-    fadingOutGameplay: false
+    fadingOutGameplay: false,
+    isFetching: false
   }
+
 
   fadeOutGameplayTime = 600
 
@@ -23,6 +26,25 @@ export default class App extends React.Component {
       }, this.fadeOutGameplayTime + 150)
     })
   }
+
+
+  componentWillMount(){
+    this.setState({isFetching: true}, () => {
+      return AsyncStorage.getItem('@webToken')
+        .then(webToken => fetchLoginJwt(webToken))
+        .then(isValid => {
+          if (isValid) {
+            this.setState({loggedIn: true, isFetching: false})
+          } else {
+            this.setState({loggedIn: false, isFetching: false})
+          }
+        })
+      .catch((err) => {
+        this.setState({loggedIn: false, isFetching: false})
+      })
+    })
+  }
+
 
   setLoggedIn = (bool, webToken=null) => {
     if (bool) {
@@ -38,13 +60,22 @@ export default class App extends React.Component {
     }
   }
 
+
   setToPlaying = () => {
     this.setState({playing: true})
   }
 
+  
   render() {
     let component;
-    if (!this.state.loggedIn) {
+    if (this.state.isFetching) {
+      component = <ActivityIndicator 
+        size='large' 
+        color='rgb(255, 255, 255)' 
+        animating={this.state.isFetching} 
+        style={{marginTop: 100}}
+      />
+    } else if (!this.state.loggedIn) {
       component = <LoginMain setLoggedIn={this.setLoggedIn}/>
     } else if (this.state.playing) {
       component = <GameplayMain 

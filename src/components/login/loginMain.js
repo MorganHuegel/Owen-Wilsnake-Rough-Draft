@@ -52,6 +52,8 @@ export class LoginMain extends React.Component {
     }
   }
 
+  
+
   onChangeUsernameText = (text) => {
     let usernameErrorMessage = ''
     if (!text) {
@@ -62,6 +64,8 @@ export class LoginMain extends React.Component {
       usernameErrorMessage
     })
   }
+
+
 
   onChangePasswordText = (text) => {
     let passwordErrorMessage = ''
@@ -80,13 +84,18 @@ export class LoginMain extends React.Component {
   }
 
 
+
   onBlurUsername = (event) => {
     this.onChangeUsernameText(event.nativeEvent.text)
   }
   
+
+
   onBlurPassword = (event) => {
     this.onChangePasswordText(event.nativeEvent.text)
   }
+
+
 
   onSubmit = (event) => {
     if (this.state.usernameErrorMessage || this.state.passwordErrorMessage) {
@@ -107,7 +116,6 @@ export class LoginMain extends React.Component {
           })
         })
     })
-
   }
 
 
