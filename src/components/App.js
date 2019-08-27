@@ -31,7 +31,12 @@ export default class App extends React.Component {
   componentWillMount(){
     this.setState({isFetching: true}, () => {
       return AsyncStorage.getItem('@webToken')
-        .then(webToken => fetchLoginJwt(webToken))
+        .then(webToken => {
+          if (!webToken) {
+            return Promise.reject('No JWT stored :(')
+          }
+          return fetchLoginJwt(webToken)
+        })
         .then(isValid => {
           if (isValid) {
             this.setState({loggedIn: true, isFetching: false})

@@ -5,6 +5,8 @@ import { Header } from './header/Header';
 import { MapMain } from './map/MapMain';
 import { GameOverMain } from './GameOverMain';
 
+import { sendFinalScoreFetch } from '../../fetchFunctions/sendFinalScore';
+
 
 /// LOAD THE SOUND BYTES //////////////////////////////////////
 let Sound = require('react-native-sound');
@@ -167,7 +169,9 @@ export class GameplayMain extends React.Component {
 
 
   setOwenToDead = () => {
-    this.setState({owenIsDead: true})
+    this.setState({owenIsDead: true}, () => {
+      return sendFinalScoreFetch(this.state.score.points, this.state.score.numTouches)
+    })
   }
 
 
