@@ -44,9 +44,9 @@ export default class App extends React.Component {
             this.setState({loggedIn: false, isFetching: false})
           }
         })
-      .catch((err) => {
-        this.setState({loggedIn: false, isFetching: false})
-      })
+        .catch((err) => {
+          this.setState({loggedIn: false, isFetching: false})
+        })
     })
   }
 

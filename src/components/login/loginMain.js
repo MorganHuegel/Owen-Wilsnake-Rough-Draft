@@ -110,8 +110,9 @@ export class LoginMain extends React.Component {
           return this.props.setLoggedIn(true, webToken)
         })
         .catch(errorMessage => {
+          // errorMessage should be a string, but it might be an Error object
           this.setState({
-            fetchErrorMessage: errorMessage,
+            fetchErrorMessage: errorMessage.message ? errorMessage.message : errorMessage,
             isFetching: false
           })
         })

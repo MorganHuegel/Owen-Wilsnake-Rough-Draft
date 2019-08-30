@@ -10,15 +10,11 @@ export function GameOverButtons (props) {
       justifyContent: 'space-around',
       alignItems: 'flex-end',
       paddingBottom: 50
-      //backgroundColor: 'blue'
     },
     button1: {
       backgroundColor: 'yellow',
       justifyContent: 'center',
       alignItems: 'center',
-      // backgroundColor: 'rgb(230, 230, 230)',
-      // borderWidth: 2,
-      // borderColor: 'rgb(70, 80, 120)',
       borderColor: 'rgb(230, 230, 230)',
       borderWidth: 2,
       backgroundColor: 'rgb(70, 80, 120)',
@@ -30,13 +26,8 @@ export function GameOverButtons (props) {
       fontSize: 20
     },
     button2: {
-      // justifyContent: 'center',
       justifyContent: 'flex-end',
       alignItems: 'center',
-      //borderColor: 'rgb(230, 230, 230)',
-      //borderWidth: 2,
-      //backgroundColor: 'rgb(70, 80, 120)',
-      //height: 60
     },
     button2Text: {
       color: 'rgb(230, 230, 230)',
