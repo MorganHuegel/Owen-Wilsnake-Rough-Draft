@@ -19,7 +19,10 @@ export function sendFinalScoreFetch (score, numOfTouches) {
   })
   .then(res => res.json())
   .then(response => {
-    console.log('RESPONSE: ', response)
+    if (response.error) {
+      return Promise.reject(response.error)
+    }
+    return response
   })
   .catch(error => {
     return Promise.reject(error)

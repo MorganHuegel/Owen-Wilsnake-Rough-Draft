@@ -17,7 +17,7 @@ export class LandingMain extends React.Component {
       <View style={this.landingMainStyles.main}>
         <LogoMain />
         <StartButton setToPlaying={this.props.setToPlaying}/>
-        <Button title='Logout' onPress={() => this.props.setLoggedIn(false)}/>
+        <Button title='Logout' onPress={() => this.props.setLoggedIn(false)} color='white'/>
       </View>
     )
   }
