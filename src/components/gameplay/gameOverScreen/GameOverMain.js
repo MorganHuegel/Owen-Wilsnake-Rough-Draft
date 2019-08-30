@@ -43,7 +43,13 @@ export class GameOverMain extends React.Component {
 
     return (
       <Animated.View style={gameOverMainStyles.view}>
-        <GameOverMessage backToLanding={this.props.backToLanding} restartGame={this.props.restartGame} score={this.props.score}/>
+        <GameOverMessage 
+          backToLanding={this.props.backToLanding} 
+          restartGame={this.props.restartGame} 
+          score={this.props.score}
+          isFetchingScores={this.props.isFetchingScores}
+          finalScoreData={this.props.finalScoreData}
+          />
       </Animated.View>
     )
   }

@@ -3,7 +3,7 @@ import { Animated, Easing } from 'react-native';
 
 import { Header } from './header/Header';
 import { MapMain } from './map/MapMain';
-import { GameOverMain } from './GameOverMain';
+import { GameOverMain } from './gameOverScreen/GameOverMain';
 
 import { sendFinalScoreFetch } from '../../fetchFunctions/sendFinalScore';
 
@@ -52,6 +52,8 @@ export class GameplayMain extends React.Component {
     },
     difficulty: 5, // can be 1-10
     owenIsDead: false,
+    isFetchingScores: false,
+    finalScoreData: null,
     slidingOutGameOver: false
   }
 
@@ -130,7 +132,9 @@ export class GameplayMain extends React.Component {
             numTouches: 0
           },
           owenIsDead: false,
-          slidingOutGameOver: false
+          slidingOutGameOver: false,
+          isFetchingScores: false,
+          finalScoreData: null
         }
     
         this.setState(freshState)
@@ -169,8 +173,16 @@ export class GameplayMain extends React.Component {
 
 
   setOwenToDead = () => {
-    this.setState({owenIsDead: true}, () => {
+    this.setState({owenIsDead: true, isFetchingScores: true}, () => {
       return sendFinalScoreFetch(this.state.score.points, this.state.score.numTouches)
+        .then(scores => this.setState({
+          finalScoreData: scores,
+          isFetchingScores: false
+        }))
+        .catch(err => {
+          console.log('Probably should error handle here...' + err)
+          this.setState({isFetchingScores: false, finalScoreData: null})
+        })
     })
   }
 
@@ -200,6 +212,8 @@ export class GameplayMain extends React.Component {
           restartGame={this.restartGame} 
           score={this.state.score}
           slidingOutGameOver={this.state.slidingOutGameOver}
+          isFetchingScores={this.state.isFetchingScores}
+          finalScoreData={this.state.finalScoreData}
         /> : 
         null
     }
