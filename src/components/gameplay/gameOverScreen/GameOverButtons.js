@@ -6,10 +6,14 @@ export function GameOverButtons (props) {
   const gameOverButtonStyles = {
     container: {
       flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'stretch',
+    },
+    buttonRowContainer: {
       flexDirection: 'row',
       justifyContent: 'space-around',
-      alignItems: 'flex-start',
-      paddingBottom: 50,
+      alighItems: 'flex-end'
     },
     button1: {
       backgroundColor: 'yellow',
@@ -37,13 +41,15 @@ export function GameOverButtons (props) {
 
   return (
     <View style={gameOverButtonStyles.container}>
-      <TouchableOpacity onPress={() => props.restartGame()} style={gameOverButtonStyles.button1}>
-        <Text style={gameOverButtonStyles.button1Text}>Play Again</Text>
-      </TouchableOpacity>
+      <View style={gameOverButtonStyles.buttonRowContainer}>
+        <TouchableOpacity onPress={() => props.restartGame()} style={gameOverButtonStyles.button1}>
+          <Text style={gameOverButtonStyles.button1Text}>Play Again</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => props.backToLanding()} style={gameOverButtonStyles.button2}>
-        <Text style={gameOverButtonStyles.button2Text}>Back to Landing</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => props.backToLanding()} style={gameOverButtonStyles.button2}>
+          <Text style={gameOverButtonStyles.button2Text}>Back to Landing</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }

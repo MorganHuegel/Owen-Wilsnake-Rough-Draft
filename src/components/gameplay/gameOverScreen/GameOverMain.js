@@ -33,7 +33,7 @@ export class GameOverMain extends React.Component {
       view: {
         position: 'absolute',
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
         top: this.state.top,
         left: -25,
         height: this.screenHeight,

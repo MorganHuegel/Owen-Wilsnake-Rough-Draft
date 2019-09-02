@@ -7,42 +7,7 @@ import { GameOverMain } from './gameOverScreen/GameOverMain';
 
 import { sendFinalScoreFetch } from '../../fetchFunctions/sendFinalScore';
 
-const dummyFinalScoreData = {
-  inTopThree: false,
-  userRank: 43,
-  userScore: {
-    username: "bobuser", 
-    user_id: 1, 
-    id: 76, 
-    score: 0, 
-    num_of_touches: 0,
-    played_on_ts: "2019-08-30T18:47:11.373Z"
-  },
-  topThreeScoresToday: [
-    {
-      id: 45,
-      num_of_touches: 33,
-      played_on_ts: "2019-08-30T00:47:43.832Z",
-      score: 5967,
-      user_id: 1,
-      username: "bobuser"
-    },{
-      id: 24,
-      num_of_touches: 17,
-      played_on_ts: "2019-08-29T23:41:13.174Z",
-      score: 2483,
-      user_id: 1,
-      username: "bobuser"
-    }, {
-      id: 25,
-      num_of_touches: 4,
-      played_on_ts: "2019-08-29T23:41:49.508Z",
-      score: 996,
-      user_id: 1,
-      username: "bobuser"
-    }
-  ]
-}
+
 /// LOAD THE SOUND BYTES //////////////////////////////////////
 let Sound = require('react-native-sound');
 Sound.setCategory('Playback'); // Enable playback in silence mode

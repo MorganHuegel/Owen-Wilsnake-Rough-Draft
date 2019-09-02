@@ -9,19 +9,21 @@ export function GameOverHighScores (props) {
       flex: 2,
       justifyContent: 'center',
       alignItems: 'stretch',
-      padding: 40
+      padding: 20,
     },
     scoreContainer: {
       flexDirection: 'column',
       justifyContent: 'space-around',
-      height: 250,
+      height: 400,
       borderWidth: 4,
       borderColor: 'rgb(255, 255, 255)',
+      padding: 20
     },
     headerText: {
       textAlign: 'center',
       fontSize: 25,
-      color: 'rgb(220, 220, 220)'
+      color: 'rgb(220, 220, 220)',
+      marginBottom: 10
     },
     row: {
       flexDirection: 'row',
@@ -30,18 +32,25 @@ export function GameOverHighScores (props) {
       borderRadius: 10,
       overflow: 'hidden',
       backgroundColor: 'rgb(220, 220, 220)',
-      maxHeight: 40,
       paddingHorizontal: 10,
-      alignItems: 'center'
+      alignItems: 'center',
+      paddingVertical: 5,
+      marginBottom: 5
     },
     scoreSpan: {
-      flex: 2
+      flex: 2,
+      fontSize: 20,
+      marginRight: 5
     },
     usernameSpan: {
-      flex: 4
+      flex: 4,
+      fontSize: 18,
+      marginRight: 5
     },
     numTouchesSpan: {
-      flex: 1
+      flex: 1.5,
+      fontSize: 18,
+      marginRight: 5
     },
     dateSpan: {
 
@@ -56,21 +65,36 @@ export function GameOverHighScores (props) {
     )
   }
 
-  const tableRows = props.finalScoreData.topThreeScoresToday.map(game => {
+  const tableRows = props.finalScoreData.topFiveScoresToday.map(game => {
+    if (props.finalScoreData.topFiveScoresToday[0].id === game.id) game.username = 'really long username'
     return <View style={gameOverHighScoresStyles.row} key={game.id}>
       <Text style={gameOverHighScoresStyles.scoreSpan}>{game.score}</Text>
-      <Text style={gameOverHighScoresStyles.usernameSpan}>{game.username}</Text>
+      <Text style={gameOverHighScoresStyles.usernameSpan} ellipsizeMode='tail' numberOfLines={1}>{game.username}</Text>
       <Text style={gameOverHighScoresStyles.numTouchesSpan}>{game.num_of_touches}</Text>
       <Text style={gameOverHighScoresStyles.dateSpan} adjustsFontSizeToFit>{convertTsToLocal(game.played_on_ts)}</Text>
     </View>
   })
 
-
   return (
     <View style={gameOverHighScoresStyles.container}>
       <View style={gameOverHighScoresStyles.scoreContainer}>
+
         <Text style={gameOverHighScoresStyles.headerText}>Top Scores Today</Text>
+        <View style={[gameOverHighScoresStyles.row, {backgroundColor: 'none'}]}>
+          <Text style={{flex: 1.8, fontSize: 12, color: 'rgb(220, 220, 220)'}} adjustsFontSizeToFit>Score</Text>
+          <Text style={{flex: 3,fontSize: 12, color: 'rgb(220, 220, 220)'}} adjustsFontSizeToFit>Username</Text>
+          <Text style={{fontSize: 12, color: 'rgb(220, 220, 220)'}} adjustsFontSizeToFit>Touch</Text>
+          <Text style={{flex: 3, textAlign: 'center', fontSize: 12, color: 'rgb(220, 220, 220)'}} adjustsFontSizeToFit>Time</Text>
+        </View>
         {tableRows}
+
+        <Text style={[gameOverHighScoresStyles.headerText, {marginTop: 20}]}>Your Rank: {props.finalScoreData.userIndexRank + 1}</Text>
+        <View style={gameOverHighScoresStyles.row}>
+          <Text style={gameOverHighScoresStyles.scoreSpan}>{props.finalScoreData.userScore.score}</Text>
+          <Text style={gameOverHighScoresStyles.usernameSpan}>{props.finalScoreData.userScore.username}</Text>
+          <Text style={gameOverHighScoresStyles.numTouchesSpan}>{props.finalScoreData.userScore.num_of_touches}</Text>
+          <Text style={gameOverHighScoresStyles.dateSpan} adjustsFontSizeToFit>{convertTsToLocal(props.finalScoreData.userScore.played_on_ts)}</Text>
+        </View>
 
       </View>
     </View>
