@@ -1,18 +1,14 @@
 import React from 'react';
 
 import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage'
 import { LoginInput } from './loginInput';
 
 import { fetchLogin } from '../../fetchFunctions/login';
 
-export class LoginMain extends React.Component {
+export class LoginPasswordOnlyMain extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      usernameText: '',
-      usernameErrorMessage: '',
-      verifiedUsernameAvailable: false,
       passwordText: '',
       passwordErrorMessage: '',
       isFetching: false,
@@ -52,19 +48,6 @@ export class LoginMain extends React.Component {
     }
   }
 
-  
-
-  onChangeUsernameText = (text) => {
-    let usernameErrorMessage = ''
-    if (!text) {
-      usernameErrorMessage = 'Username is needed to show off your high scores!'
-    }
-    return this.setState({
-      usernameText: text, 
-      usernameErrorMessage
-    })
-  }
-
 
 
   onChangePasswordText = (text) => {
@@ -85,12 +68,6 @@ export class LoginMain extends React.Component {
 
 
 
-  onBlurUsername = (event) => {
-    this.onChangeUsernameText(event.nativeEvent.text)
-  }
-  
-
-
   onBlurPassword = (event) => {
     this.onChangePasswordText(event.nativeEvent.text)
   }
@@ -98,14 +75,18 @@ export class LoginMain extends React.Component {
 
 
   onSubmit = (event) => {
-    if (this.state.usernameErrorMessage || this.state.passwordErrorMessage) {
+    if (this.state.passwordErrorMessage) {
       return
     }
+    if (!this.state.passwordText) {
+      return this.setState({passwordErrorMessage: 'Whoa, hold up! Enter a password, first.'})
+    }
+
     this.setState({
       isFetching: true,
       fetchErrorMessage: ''
     }, () => {
-      return fetchLogin(this.state.usernameText, this.state.passwordText)
+      return fetchLogin(null, this.state.passwordText)
         .then(webToken => {
           return this.props.setLoggedIn(true, webToken)
         })
@@ -132,14 +113,6 @@ export class LoginMain extends React.Component {
         </View>
 
         <View style={{flex: 1}}>
-          <LoginInput 
-            isUsername={true}
-            onChange={this.onChangeUsernameText}
-            errorMessage={this.state.usernameErrorMessage}
-            isFetching={this.state.isFetching}
-            onBlur={this.onBlurUsername}
-            inputValue={this.state.usernameText}
-          />
 
           <LoginInput 
             isUsername={false}

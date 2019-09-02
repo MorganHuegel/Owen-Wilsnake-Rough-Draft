@@ -1,12 +1,11 @@
 import { SERVER_BASE_URL } from './config'
 import DeviceInfo from 'react-native-device-info';
 
+import { fetchLogin } from './login';
 
-export function fetchLogin (username, password, phoneId=null) {
-  if (!username) {
-    phoneId = DeviceInfo.getUniqueID()
-  }
-  return fetch(`${SERVER_BASE_URL}/users/login`, {
+export function registerUser (username, password) {
+  const phoneId = DeviceInfo.getUniqueID()
+  return fetch(`${SERVER_BASE_URL}/users/register`, {
     method: 'post',
     headers: {
       'Accept': 'application/json',
@@ -20,8 +19,8 @@ export function fetchLogin (username, password, phoneId=null) {
   })
   .then(res => res.json())
   .then(response => {
-    if (response.webToken) {
-      return Promise.resolve(response.webToken)
+    if (response.userId) {
+      return fetchLogin(username, password)
     } else if (response.error) {
       return Promise.reject(response.error)
     } else {

@@ -2,14 +2,18 @@ import React from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { LoginMain } from './login/loginMain';
+import { LoginPasswordOnlyMain } from './login/loginPasswordOnlyMain';
+import { RegisterMain } from './login/registerMain';
 import { GameplayMain } from './gameplay/GameplayMain';
 import { LandingMain } from './landing-page/LandingMain';
 import { fetchLoginJwt } from '../fetchFunctions/loginJwt';
+import { checkPhoneId } from '../fetchFunctions/checkPhoneId';
 
 
 export default class App extends React.Component {
   state = {
+    showRegistration: false,
+    showPasswordLogin: false,
     loggedIn: false,
     playing: false,
     fadingOutGameplay: false,
@@ -22,30 +26,66 @@ export default class App extends React.Component {
   backToLanding = () => {
     this.setState({fadingOutGameplay: true}, () => {
       setTimeout(() => {
-        this.setState({playing: false, fadingOutGameplay: false})
+        this.setState({
+          showRegistration: false,
+          showPasswordLogin: false,
+          playing: false, 
+          fadingOutGameplay: false
+        })
       }, this.fadeOutGameplayTime + 150)
     })
   }
 
 
   componentWillMount(){
+    // If JWT, just log user in automatically
+    // If no JWT, but phoneId is in database, just have uesr enter password
+    // If no JWT and phoneId not in database, have uesr register
     this.setState({isFetching: true}, () => {
       return AsyncStorage.getItem('@webToken')
         .then(webToken => {
           if (!webToken) {
-            return Promise.reject('No JWT stored :(')
+            return Promise.reject('No JWT')
           }
           return fetchLoginJwt(webToken)
         })
         .then(isValid => {
           if (isValid) {
-            this.setState({loggedIn: true, isFetching: false})
+            this.setState({loggedIn: true, showPasswordLogin: false, isFetching: false})
           } else {
-            this.setState({loggedIn: false, isFetching: false})
+            this.setState({loggedIn: false, showPasswordLogin: true, isFetching: false})
           }
         })
         .catch((err) => {
-          this.setState({loggedIn: false, isFetching: false})
+          if (err === 'No JWT') {
+            return checkPhoneId()
+              .then(userExists => {
+                if (userExists) {
+                  this.setState({
+                    showRegistration: false,
+                    showPasswordLogin: true,
+                    loggedIn: false,
+                    isFetching: false
+                  })
+                } else {
+                  this.setState({
+                    showRegistration: true,
+                    showPasswordLogin: false,
+                    loggedIn: false,
+                    isFetching: false
+                  })
+                }
+              })
+              .catch(err => {
+                console.log('Should error handle here in checkPhoneId: ', err)
+              })
+          }
+          else this.setState({
+            loggedIn: false, 
+            showPasswordLogin: true, 
+            showRegistration: false, 
+            isFetching: false
+          })
         })
     })
   }
@@ -55,19 +95,27 @@ export default class App extends React.Component {
     if (bool) {
       return AsyncStorage.setItem('@webToken', webToken)
         .then(this.setState({
+          showRegistration: false,
+          showPasswordLogin: false,
           loggedIn: bool
         }))
     } else {
       return AsyncStorage.removeItem('@webToken')
         .then(this.setState({
-          loggedIn: bool
+          loggedIn: bool,
+          playing: false,
+          showPasswordLogin: true
         }))
     }
   }
 
 
   setToPlaying = () => {
-    this.setState({playing: true})
+    this.setState({
+      playing: true,
+      showRegistration: false,
+      showPasswordLogin: false
+    })
   }
 
   
@@ -80,8 +128,10 @@ export default class App extends React.Component {
         animating={this.state.isFetching} 
         style={{marginTop: 100}}
       />
-    } else if (!this.state.loggedIn) {
-      component = <LoginMain setLoggedIn={this.setLoggedIn}/>
+    } else if (!this.state.loggedIn && this.state.showRegistration) {
+      component = <RegisterMain setLoggedIn={this.setLoggedIn}/>
+    } else if (!this.state.loggedIn && this.state.showPasswordLogin) {
+      component = <LoginPasswordOnlyMain setLoggedIn={this.setLoggedIn}/>
     } else if (this.state.playing) {
       component = <GameplayMain 
         backToLanding={this.backToLanding} 
