@@ -8,8 +8,8 @@ export function GameOverButtons (props) {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-around',
-      alignItems: 'flex-end',
-      paddingBottom: 50
+      alignItems: 'flex-start',
+      paddingBottom: 50,
     },
     button1: {
       backgroundColor: 'yellow',

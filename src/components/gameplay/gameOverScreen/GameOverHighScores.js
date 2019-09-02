@@ -6,19 +6,46 @@ import { View, Text, ActivityIndicator } from 'react-native'
 export function GameOverHighScores (props) {
   const gameOverHighScoresStyles = {
     container: {
-      flex: 3,
-      backgroundColor: 'red',
+      flex: 2,
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'stretch',
+      padding: 40
     },
     scoreContainer: {
-      backgroundColor: 'blue',
-      flexDirection: 'row',
-      height: 250
-    },
-    scoresColumn: {
       flexDirection: 'column',
-    }
+      justifyContent: 'space-around',
+      height: 250,
+      borderWidth: 4,
+      borderColor: 'rgb(255, 255, 255)',
+    },
+    headerText: {
+      textAlign: 'center',
+      fontSize: 25,
+      color: 'rgb(220, 220, 220)'
+    },
+    row: {
+      flexDirection: 'row',
+      flex: 1,
+      borderColor: 'rgb(220, 220, 220)',
+      borderRadius: 10,
+      overflow: 'hidden',
+      backgroundColor: 'rgb(220, 220, 220)',
+      maxHeight: 40,
+      paddingHorizontal: 10,
+      alignItems: 'center'
+    },
+    scoreSpan: {
+      flex: 2
+    },
+    usernameSpan: {
+      flex: 4
+    },
+    numTouchesSpan: {
+      flex: 1
+    },
+    dateSpan: {
+
+    },
   }
 
   if (props.isFetchingScores) {
@@ -29,45 +56,21 @@ export function GameOverHighScores (props) {
     )
   }
 
-  console.log(props.finalScoreData.topThreeScoresToday[0].played_on_ts)
+  const tableRows = props.finalScoreData.topThreeScoresToday.map(game => {
+    return <View style={gameOverHighScoresStyles.row} key={game.id}>
+      <Text style={gameOverHighScoresStyles.scoreSpan}>{game.score}</Text>
+      <Text style={gameOverHighScoresStyles.usernameSpan}>{game.username}</Text>
+      <Text style={gameOverHighScoresStyles.numTouchesSpan}>{game.num_of_touches}</Text>
+      <Text style={gameOverHighScoresStyles.dateSpan} adjustsFontSizeToFit>{convertTsToLocal(game.played_on_ts)}</Text>
+    </View>
+  })
+
 
   return (
     <View style={gameOverHighScoresStyles.container}>
       <View style={gameOverHighScoresStyles.scoreContainer}>
-
-        <View style={gameOverHighScoresStyles.scoresColumn}>
-          <Text>Scores here</Text>
-          <Text>{props.finalScoreData.topThreeScoresToday[0].score}</Text>
-          <Text>{props.finalScoreData.topThreeScoresToday[1].score}</Text>
-          <Text>{props.finalScoreData.topThreeScoresToday[2].score}</Text>
-        </View>
-
-        <View style={gameOverHighScoresStyles.scoresColumn}>
-          <Text>Usernames here</Text>
-          <Text>{props.finalScoreData.topThreeScoresToday[0].username}</Text>
-          <Text>{props.finalScoreData.topThreeScoresToday[1].username}</Text>
-          <Text>{props.finalScoreData.topThreeScoresToday[2].username}</Text>
-        </View>
-
-        <View style={gameOverHighScoresStyles.scoresColumn}>
-          <Text>Touches here</Text>
-          <Text>{props.finalScoreData.topThreeScoresToday[0].num_of_touches}</Text>
-          <Text>{props.finalScoreData.topThreeScoresToday[1].num_of_touches}</Text>
-          <Text>{props.finalScoreData.topThreeScoresToday[2].num_of_touches}</Text>
-        </View>
-
-        <View style={gameOverHighScoresStyles.scoresColumn}>
-          <Text>Time here</Text>
-          <Text>
-            {convertTsToLocal(props.finalScoreData.topThreeScoresToday[0].played_on_ts)}
-          </Text>
-          <Text>
-            {convertTsToLocal(props.finalScoreData.topThreeScoresToday[1].played_on_ts)}
-          </Text>
-          <Text>
-            {convertTsToLocal(props.finalScoreData.topThreeScoresToday[2].played_on_ts)}
-          </Text>
-        </View>
+        <Text style={gameOverHighScoresStyles.headerText}>Top Scores Today</Text>
+        {tableRows}
 
       </View>
     </View>
@@ -77,6 +80,6 @@ export function GameOverHighScores (props) {
 function convertTsToLocal (ts){
   ts = ts.replace(/[TZ]/g, " ").trim()
   let a = moment.utc(ts, 'YYYY-MM-DD HH:mm:ss').toDate()
-  let b = moment(a).local().format('ddd h:m:s')
+  let b = moment(a).local().format('ddd hh:mm a')
   return b
  }
