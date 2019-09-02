@@ -3,6 +3,8 @@ import moment from 'moment';
 
 import { View, Text, ActivityIndicator } from 'react-native'
 
+import { GameOverHighScoreAnimated } from './GameOverHighScoreAnimated';
+
 export function GameOverHighScores (props) {
   const gameOverHighScoresStyles = {
     container: {
@@ -13,9 +15,9 @@ export function GameOverHighScores (props) {
     },
     scoreContainer: {
       flexDirection: 'column',
-      justifyContent: 'space-around',
       height: 400,
       borderWidth: 4,
+      borderRadius: 5,
       borderColor: 'rgb(255, 255, 255)',
       padding: 20
     },
@@ -66,8 +68,11 @@ export function GameOverHighScores (props) {
   }
 
   const tableRows = props.finalScoreData.topFiveScoresToday.map(game => {
-    if (props.finalScoreData.topFiveScoresToday[0].id === game.id) game.username = 'really long username'
-    return <View style={gameOverHighScoresStyles.row} key={game.id}>
+    if (game.id === props.finalScoreData.userScore.id) {
+      return <GameOverHighScoreAnimated styles={gameOverHighScoresStyles} game={game}/>
+    }
+
+    return <View style={[gameOverHighScoresStyles.row]} key={game.id}>
       <Text style={gameOverHighScoresStyles.scoreSpan}>{game.score}</Text>
       <Text style={gameOverHighScoresStyles.usernameSpan} ellipsizeMode='tail' numberOfLines={1}>{game.username}</Text>
       <Text style={gameOverHighScoresStyles.numTouchesSpan}>{game.num_of_touches}</Text>
@@ -101,7 +106,7 @@ export function GameOverHighScores (props) {
   )
 }
 
-function convertTsToLocal (ts){
+export function convertTsToLocal (ts){
   ts = ts.replace(/[TZ]/g, " ").trim()
   let a = moment.utc(ts, 'YYYY-MM-DD HH:mm:ss').toDate()
   let b = moment(a).local().format('ddd hh:mm a')

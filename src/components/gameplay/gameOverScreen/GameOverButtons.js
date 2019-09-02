@@ -21,6 +21,7 @@ export function GameOverButtons (props) {
       alignItems: 'center',
       borderColor: 'rgb(230, 230, 230)',
       borderWidth: 2,
+      borderRadius: 5,
       backgroundColor: 'rgb(70, 80, 120)',
       padding: 10,
       height: 60
