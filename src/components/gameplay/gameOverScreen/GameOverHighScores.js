@@ -69,7 +69,7 @@ export function GameOverHighScores (props) {
 
   const tableRows = props.finalScoreData.topFiveScoresToday.map(game => {
     if (game.id === props.finalScoreData.userScore.id) {
-      return <GameOverHighScoreAnimated styles={gameOverHighScoresStyles} game={game}/>
+      return <GameOverHighScoreAnimated styles={gameOverHighScoresStyles} game={game} key={game.id}/>
     }
 
     return <View style={[gameOverHighScoresStyles.row]} key={game.id}>
